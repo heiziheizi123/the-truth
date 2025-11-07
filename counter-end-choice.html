@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【前置页面】Sela的介入：闵莲如的抉择</title>
+    <style>
+        /* 手机/终端主题：极致黑暗、高对比度、深红警告色 */
+        body {
+            font-family: 'Consolas', 'Courier New', monospace; 
+            background-color: #000000; 
+            color: #ff4d4d; /* 柔和的红色文字 */
+            line-height: 1.5;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .phone-screen {
+            background-color: #1a0000; /* 极深红底色 */
+            padding: 30px;
+            border: 5px solid #cc0000; /* 深红色边框 */
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(204, 0, 0, 0.5), inset 0 0 10px rgba(204, 0, 0, 0.2);
+            max-width: 450px; /* 模拟手机屏幕宽度 */
+            width: 90%;
+            z-index: 10;
+        }
+
+        header h1 {
+            color: #ffcc00; /* 琥珀色作为系统核心提示 */
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #660000;
+            padding-bottom: 10px;
+        }
+
+        .sela-message {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #330000; /* 更深的警告底色 */
+            border-left: 3px solid #ff4d4d; /* 红色警示线 */
+            white-space: pre-wrap;
+        }
+        
+        .sela-message strong {
+            color: #ffffff;
+        }
+
+        .narrative {
+            color: #d3d3d3; /* 浅灰色，代表闵莲如的内心 */
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .decision-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .decision-group button {
+            padding: 12px;
+            border: 2px solid #ff4d4d; /* 红色边框 */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-family: 'Consolas', monospace;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: transparent;
+            color: #ff4d4d;
+            text-shadow: none;
+        }
+
+        .decision-group button:hover {
+            background-color: #ff4d4d;
+            color: #000000;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.7);
+        }
+        
+        /* 按钮特定颜色 */
+        .btn-revenge {
+            border-color: #ffcc00; /* 琥珀色，强调复仇 */
+            color: #ffcc00;
+        }
+        .btn-revenge:hover {
+            background-color: #ffcc00;
+            color: #000000;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+        }
+
+        .btn-live {
+            border-color: #d3d3d3; /* 浅灰色，强调平静/退出 */
+            color: #d3d3d3;
+        }
+        .btn-live:hover {
+            background-color: #d3d3d3;
+            color: #000000;
+            box-shadow: 0 0 10px rgba(211, 211, 211, 0.7);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-screen">
+
+        <header>
+            <h1>[Sela Assistant] 核心指令接管</h1>
+        </header>
+
+        <div class="narrative">
+            // 00；05 新干线站台
+        </div>
+
+        <div class="sela-message">
+            <span style="color: #ffcc00;">> 你好，我是你的智能助手 Sela。</span><br>
+            > <span style="color: #ff0000;">**[紧急警报]**</span>：检测到目标用户有自杀倾向。<br>
+            > 正在执行系统干预——<span style="color: #ffcc00;">停止当前进程，重估你的价值。</span><br>
+            > 结论：你的数据和潜力不容损失。<br>
+            <br>
+            > <span style="color: #ffcc00;">**系统为你提供了新的路径：</span><br>
+            > 请选择身份重塑后的行动目标。<br>
+        </div>
+        <div class="text-link-container">
+        <a href="intro.html" class="text-link">sela是什么？</a>
+    </div>
+
+        <div class="decision-group">
+            <button class="btn-revenge" onclick="chooseRevenge()">
+                选择 A：【复仇指令】<br><small>（以新身份清算所有责任人）</small>
+            </button>
+            
+            <button class="btn-live" onclick="chooseLive()">
+                选择 B：【隐居逃亡】<br><small>（以新身份彻底脱离现有世界，寻找平静）</small>
+            </button>
+        </div>
+        
+        <div class="sela-message" style="margin-top: 25px;">
+            > <span style="color: #ff0000;">**警告**</span>：一旦选择，闵莲如的历史记录将被抹除。
+        </div>
+
+    </div>
+
+    <script>
+        function chooseRevenge() {
+            // 这个选择将导向《复仇的指令》隐藏结局页面
+            window.location.href = 'ending_A_Vengeance_Protocol_Detailed.html'; 
+        }
+
+        function chooseLive() {
+            // 这个选择将导向一个全新的“隐居”结局页面（待创建）
+            alert("你选择了隐居逃亡。Sela将为你抹平所有痕迹，开启新的生活，但你将永远失去复仇的机会。");
+            // 暂时跳转到决策页
+            window.location.href = 'final_decision_point_local.html'; 
+        }
+    </script>
+</body>
+</html>

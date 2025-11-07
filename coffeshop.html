@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最终决策点 - 闵莲如案</title>
+    <style>
+        /* CSS 变量定义 */
+        :root {
+            --main-bg-color: #1a1a1a;        
+            --panel-bg-color: rgba(43, 43, 43, 0.98); 
+            --text-color: #e0e0e0;          
+            --accent-color: #008080;        
+            --typing-cursor-color: #ffffff; 
+            --error-color: #ff6347;         
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* 背景图片和模糊效果 */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* 【本地文件路径】：请确保 'coffee.png' 与本 HTML 文件在同一目录下 */
+            background-image: url('coffee.jpg'); 
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px); /* 模糊效果 */
+            z-index: -1;
+        }
+
+        .decision-panel {
+            background-color: var(--panel-bg-color); 
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); 
+            max-width: 700px;
+            width: 90%;
+            border: 2px solid var(--accent-color);
+            z-index: 10;
+        }
+
+        h1 {
+            color: var(--accent-color); 
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #555; 
+            padding-bottom: 15px;
+            text-align: center;
+            text-shadow: none; 
+        }
+
+        /* 打字机文本容器 - 保持简洁的终端风格 */
+        .typing-container {
+            min-height: 150px;
+            padding: 15px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background-color: #333;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        /* 打字机文本自身 */
+        .typing-text {
+            display: inline-block;
+            overflow: hidden;
+            border-right: .15em solid var(--typing-cursor-color);
+            white-space: pre-wrap;
+            margin: 0;
+            text-shadow: none; 
+            animation: 
+                blink-caret .75s step-end infinite;
+        }
+
+        /* 打字机动画定义 */
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--typing-cursor-color); }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        /* 统一的按钮颜色 */
+        button {
+            padding: 15px 30px;
+            border: 2px solid var(--accent-color);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.1s;
+            flex: 1;
+            max-width: 250px;
+            background-color: var(--accent-color); 
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            text-shadow: none;
+        }
+
+        button:hover {
+            background-color: #009999;
+            border-color: #00ffff;
+            transform: translateY(-2px); 
+        }
+        
+        small {
+            display: block;
+            margin-top: 5px;
+            font-weight: normal;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        .ending-hint {
+            color: var(--error-color); 
+            margin-top: 25px;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-image"></div>
+
+    <div class="decision-panel">
+        <h1>最终 - 2025年9月15日</h1>
+        
+        <div class="typing-container">
+            <p id="typing-output" class="typing-text"></p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-publish" onclick="publishTruth()">
+                发布真相
+                <small>（对应结局：选择的代价）</small>
+            </button>
+            
+            <button class="btn-hide" onclick="hideTruth()">
+                永远隐瞒
+                <small>（对应结局：沉默的共犯）</small>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const premiseText = 
+            " 陈默坐在咖啡厅里，目光无意间停驻在一桩尘封的旧案上。十年的光阴，他早已建立了美满的家庭，并有了一个可爱的女儿。每当他凝视着女儿天真无邪的睡颜时，心中总会泛起对闵莲如的复杂思绪——那个在日记中写下“爱太沉重，也是枷锁”的女孩。这份强烈的联结和对比，使他内心陷入了巨大的挣扎。女儿的纯真，越发衬托出旧案的沉痛与闵莲如话语中的绝望。他开始深刻地犹豫：是否应该披露这桩往事，让真相重见天日，同时又要顾虑这会给现在安稳的生活带来怎样的冲击。";
+
+        let i = 0;
+        const speed = 30; 
+
+        function typeWriter() {
+            const outputElement = document.getElementById("typing-output");
+            if (i < premiseText.length) {
+                outputElement.textContent += premiseText.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            } else {
+                outputElement.style.borderRight = 'none';
+            }
+        }
+
+        window.onload = function() {
+            typeWriter();
+        };
+
+        function publishTruth() {
+            window.location.href = 'ending_A_Choice_Cost.html'; 
+        }
+
+        function hideTruth() {
+            window.location.href = 'ending_A_Silent_Accomplice.html'; 
+        }
+    </script>
+</body>
+</html>

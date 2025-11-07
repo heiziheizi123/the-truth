@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案件最终抉择 - SELA系统</title>
+    <style>
+        /* 基础黑暗主题设置 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a; /* 深黑背景 */
+            color: #e0e0e0; /* 浅灰文字 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .choice-container {
+            background-color: #2c2c2c; /* 深灰色容器 */
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* 显著的阴影 */
+            max-width: 600px;
+            text-align: center;
+            border-top: 5px solid #0056b3; /* 柔和的深蓝色边框 */
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+        }
+
+        p {
+            color: #b0b0b0; /* 中性灰 */
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* 问题框：使用琥珀色作为警告/重要提示色，但调低饱和度 */
+        .question-box {
+            background-color: #3d3423; /* 深琥珀色背景 */
+            color: #ffd700; /* 柔和金色文字 */
+            border: 1px solid #665000;
+            padding: 18px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 25px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 25px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        /* 结局 1：告诉真相 (痛苦/冲突) - 使用深红或砖红色 */
+        .btn-tell {
+            background-color: #8b0000; /* 深砖红色 */
+            color: #ffffff;
+            border-color: #8b0000;
+        }
+
+        .btn-tell:hover {
+            background-color: #a00000;
+            border-color: #ff4d4d;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
+        }
+
+        /* 结局 2：不告诉真相 (平静/隐忍) - 使用深绿色或深青色 */
+        .btn-hide {
+            background-color: #006400; /* 深绿色 */
+            color: #ffffff;
+            border-color: #006400;
+        }
+
+        .btn-hide:hover {
+            background-color: #008000;
+            border-color: #70db70;
+            box-shadow: 0 0 10px rgba(112, 219, 112, 0.4);
+        }
+
+        small {
+            display: block;
+            margin-top: 5px;
+            font-weight: normal;
+            opacity: 0.7;
+            font-size: 0.9em;
+        }
+        /* 【新增样式】红色提示文字 */
+        .ending-hint {
+            color: #ff6347; /* 柔和的番茄红 */
+            margin-top: 25px;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="choice-container">
+        <h1>🔑 案件总结与最终抉择</h1>
+        <p>您已掌握了B闵莲如死亡背后的所有真相、动机和痛苦根源。</p>
+        
+        <div class="question-box">
+            C王秀英（母亲）正在等待您的结案报告。您是否会将B闵莲如死亡的全部真相告知她？
+        </div>
+
+        <div class="button-group">
+            <button class="btn-tell" onclick="tellTruth()">
+                告诉真相 (结局 1)
+                <small>披露B的绝望。</small>
+            </button>
+            
+            <button class="btn-hide" onclick="hideTruth()">
+                不告诉真相 (结局 2)
+                <small>隐瞒部分关键细节，保护C王秀英的平静。</small>
+            </button>
+        </div>
+        </div>
+        
+        <div class="ending-hint">
+            为莲如感到不甘心？尝试改变结局（counter-）
+        </div>
+    </div>
+
+    <script>
+        function tellTruth() {
+            // 跳转到结局 1 页面
+            window.location.href = 'endingedc.html'; 
+        }
+
+        function hideTruth() {
+            // 跳转到结局 2 页面
+            window.location.href = 'coffeshop.html'; 
+        }
+    </script>
+</body>
+</html>

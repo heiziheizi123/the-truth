@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沉默的真相 - 侦探游戏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            background-image: radial-gradient(circle at 10% 20%, #1a1a2e 0%, #0a0a0a 90%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            grid-gap: 20px;
+        }
+        
+        header {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+        
+        h1 {
+            color: #e0b354;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(224, 179, 84, 0.3);
+        }
+        
+        .subtitle {
+            color: #8a8a8a;
+            font-size: 1.2rem;
+        }
+        
+        .date-info {
+            color: #4cd1a3;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+        
+        .game-area {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 20px;
+        }
+        
+        #output {
+            border: 1px solid #333;
+            padding: 20px;
+            height: 500px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            background-color: #111;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .toolbox {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            background: #2a2a2a;
+            color: #e0e0e0;
+            border: 1px solid #444;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #3a3a3a;
+            border-color: #e0b354;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .panel {
+            border: 1px solid #333;
+            padding: 15px;
+            background-color: #111;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .panel h2 {
+            color: #e0b354;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+            font-size: 1.3rem;
+        }
+        
+        #inventory-items, #clues-list, #terms-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .item-box {
+            color: #e0b354;
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background: #1a1a1a;
+            transition: all 0.3s;
+            width: 120px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .item-box:hover {
+            border-color: #e0b354;
+            background: #2a2a2a;
+            transform: translateY(-2px);
+        }
+        
+        .tool-box {
+            color: #4cd1a3;
+            border-color: #2d5c2d;
+        }
+        
+        .term-box {
+            color: #6ab0e3;
+            border-color: #2a4d69;
+            background: #1a1a2e;
+            cursor: pointer;
+        }
+        
+        .clue {
+            color: #6ab0e3;
+            padding: 10px;
+            border: 1px solid #2a4d69;
+            border-radius: 6px;
+            background: #1a1a2e;
+            width: 100%; /* 调整宽度，避免文本过长 */
+            text-align: center;
+            cursor: pointer;
+            word-break: break-all;
+        }
+
+        .clue:hover {
+            background: #2a2a3e;
+        }
+        
+        .sela {
+            color: #4cd1a3;
+            font-weight: bold;
+        }
+        
+        .system {
+            color: #ff9966;
+            font-style: italic;
+        }
+        
+        .highlight {
+            background-color: #2a2a2a;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        #examine-box {
+            border: 2px solid #a83232;
+            padding: 15px;
+            background-color: #1a0000;
+            border-radius: 8px;
+            min-height: 150px;
+            margin-top: 10px;
+        }
+        
+        #box-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            min-height: 50px;
+            align-items: center;
+        }
+        
+        .empty-box {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .item-in-box {
+            color: #e0b354;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background: #2a2a2a;
+            cursor: pointer;
+        }
+        
+        .box-counter {
+            color: #8a8a8a;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .combination-hint {
+            margin-top: 10px;
+            color: #8a8a8a;
+            font-size: 0.9rem;
+        }
+        
+        .action-btn {
+            background: #2d5c7d;
+            border-color: #3a7ca5;
+        }
+        
+        .action-btn:hover {
+            background: #3a7ca5;
+        }
+        
+        /* 词条填空系统样式 */
+        .fill-blanks-panel {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background: #1a1a1a;
+        }
+        
+        .fill-blanks-panel h3 {
+            color: #e0b354;
+            margin-bottom: 15px;
+        }
+        
+        .question {
+            margin-bottom: 15px;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 100px;
+            height: 30px;
+            border: 1px dashed #666;
+            border-radius: 4px;
+            margin: 0 5px;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 28px;
+        }
+        
+        .blank.active {
+            border-color: #4cd1a3;
+            background: #2a2a2a;
+        }
+        
+        .term-option {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 5px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #2a2a2a;
+        }
+        
+        .term-option:hover {
+            border-color: #6ab0e3;
+        }
+        
+        .choice-option {
+            display: inline-block;
+            padding: 5px 15px;
+            margin: 5px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #2a2a2a;
+        }
+        
+        .choice-option.selected {
+            border-color: #4cd1a3;
+            background: #1a3a2a;
+        }
+        
+        .submit-btn {
+            background: #2d5c2d;
+            margin-top: 10px;
+        }
+        
+        .submit-btn:hover {
+            background: #3a7c3a;
+        }
+        
+        /* 事件还原搜索框样式 */
+        .search-restore {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background: #1a1a1a;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            background: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .restore-result {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background: #1a1a2e;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-left: 3px solid #4cd1a3;
+            background: #2a2a2a;
+        }
+        
+        .chat-sender {
+            color: #e0b354;
+            font-weight: bold;
+        }
+        
+        .chat-time {
+            color: #8a8a8a;
+            font-size: 0.8rem;
+        }
+
+        /* 聊天记录归档样式 */
+        .archive-panel {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background: #1a1a1a;
+        }
+
+        .archive-item {
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background: #2a2a2a;
+            cursor: pointer;
+        }
+
+        .archive-item:hover {
+            border-color: #4cd1a3;
+        }
+        
+        /* 滚动条样式 */
+        #output::-webkit-scrollbar,
+        .restore-result::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #output::-webkit-scrollbar-track,
+        .restore-result::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        #output::-webkit-scrollbar-thumb,
+        .restore-result::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+        
+        #output::-webkit-scrollbar-thumb:hover,
+        .restore-result::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        #restore-selector {
+            width: 100%;
+            padding: 10px;
+            background: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+/* 简单的 CSS 样式，您可以根据需要调整 */
+#save-load-panel {
+    background-color: #1a1a1a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+#save-output, #load-input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #333;
+    background-color: #0a0a0a;
+    color: #00ff00; /* 绿色文字，模仿终端 */
+    resize: none;
+    font-size: 12px;
+}
+</style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>沉默的真相</h1>
+            <div class="subtitle">一起高中女留学生卧轨事件的背后</div>
+            <div class="date-info">案件受理时间：2015年11月18日</div>
+        </header>
+        
+        <main class="game-area">
+            
+            <div id="output"></div>
+            
+            <div class="toolbox">
+                <button id="examine-btn">打开调查面板</button>
+                <button id="restore-btn">打开案件还原</button>
+                <button id="hint-btn">请求提示</button>
+            </div>
+           
+            <div id="examine-box" style="display: none;">
+                <h2>调查面板</h2>
+                <div id="box-content" class="empty-box">请从物品栏选择物品放入...</div>
+                <div class="box-counter" id="box-counter">已放置 0/3 个物品</div>
+                <div class="combination-hint">提示：最多可同时放入3个物品进行调查和组合分析</div>
+             
+                <div class="toolbox">
+                    <button id="investigate-btn" class="action-btn">调查物品</button>
+                    <button id="clear-box">清空面板</button>
+                </div>
+            </div>
+            
+            <div id="restore-panel" style="display: none;">
+                <h2>案件还原系统</h2>
+                
+                <select id="restore-selector">
+                    <option value="B_C_RELATION">还原事项一：B闵莲如与C王秀英关系</option>
+                    <option value="B_D_RELATION">还原事项二：B闵莲如与D黒木圭吾关系</option>
+                     <option value="B_E_RELATION">还原事项三：B闵莲如与E周诗涵关系</option>
+                    <option value="B_F_RELATION">还原事项四：B闵莲如与F李静怡关系</option>
+                    <option value="B_H_RELATION">还原事项五：B闵莲如与H闵建国关系</option>
+                    <option value="B_G_RELATION">还原事项六：高桥笃的日志</option>
+                </select>
+
+                <div class="search-restore">
+                    <h3>事件还原搜索 (格式：人物1/人物2/年份月份)</h3>
+                    <input type="text" id="restore-search" class="search-input" placeholder="例如：B/C/201504 或 B/D/201507">
+    
+                    <button id="search-restore-btn">搜索还原记录</button>
+                    <div id="restore-result" class="restore-result" style="display: none;">
+                        </div>
+                        <div id="save-load-panel" class="panel">
+    <h3>💾 存档与读档</h3>
+    
+    <button id="save-btn" class="main-btn">保存游戏 (生成编码)</button>
+    <textarea id="save-output" placeholder="点击保存按钮后，此处将显示您的存档编码。请复制并妥善保管。" rows="3" readonly></textarea>
+    
+    <textarea id="load-input" placeholder="请在此处粘贴您的存档编码。" rows="3"></textarea>
+    <button id="load-btn" class="main-btn">加载游戏 (导入编码)</button>
+</div>
+             
+                </div>
+
+                <div class="archive-panel">
+                    <h3>聊天记录归档</h3>
+                    <div id="archive-list">
+                        <div class="empty-box">已查看的聊天记录将自动归档到此处</div>
+                    </div>
+                </div>
+                
+                <div class="fill-blanks-panel">
+                    <h3 id="current-restore-title">当前还原事项：B闵莲如与C王秀英关系还原</h3>
+                    <div id="restoration-blanks">
+                        </div>
+                    
+                    <div id="term-options" style="margin-top: 15px;">
+                        </div>
+             
+        
+                    <button id="submit-restore" class="submit-btn">提交还原</button>
+                </div>
+            </div>
+
+            <div id="terms-panel" class="panel">
+                <h2>词条库</h2>
+                <div id="terms-list"></div>
+            </div> 
+        </main>
+        
+        <aside class="sidebar">
+            <div class="panel">
+     
+                <h2>物品栏</h2>
+                <div id="inventory-items"></div>
+            </div>
+            
+            <div class="panel">
+                <h2>已发现线索</h2>
+                <div id="clues-list"></div>
+  
+           </div>
+            
+        
+            <div class="panel">
+                <h2>案件档案</h2>
+                <div id="case-info">
+                    <p><strong>受害者：</strong>B闵莲如</p>
+                    <p><strong>年龄：：</strong>17岁</p>
+                    <p><strong>身份：：</strong>高中留学生</p>
+  
+                    <p><strong>发现地点：：</strong>东京西郊铁路</p>
+                    <p><strong>委托方：：</strong>C王秀英（母亲）</p>
+                    <p><strong>受理时间：：</strong>2015年11月18日</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+  
+    <script>
+        // 游戏状态
+        const gameState = {
+            currentScene: 'start',
+            inventory: ['校服外套', '制服包'],
+            tools: ['紫外线灯', '化学试剂', '放大镜'],
+            clues: [],
+            terms: ['反对', '学费'], // 初始词条：反对, 学费
+        
+            boxItems: [],
+            examinedItems: [],
+            gameProgress: 0,
+            currentBlank: null,
+            selectedChoice: null,
+            viewedRecords: new Set(), // 记录已查看的聊天记录
+            allRecordsViewed: false, // 是否看完所有聊天记录
+            
+            // 新增：案件还原状态和当前主题
+            currentRestorationTopic: 'B_C_RELATION', // 默认选中 B/C 关系还原
+            caseRestored: {
+                'B_C_RELATION': false,
+                'B_D_RELATION': false,
+                'B_E_RELATION': false,
+                'B_F_RELATION': false,
+                'B_G_RELATION': false,
+                'B_H_RELATION': false
+            } 
+        };
+        
+        // 物品定义 (保持不变)
+        const items = {
+            '校服外套': { 
+                type: 'item', 
+                examine: '一件普通的校服外套，看起来有些旧了。袖口有轻微磨损。',
+                detail: '在检查外套时，你发现内衬口袋中有异物。',
+                hiddenItems: ['死者手机', '白色药片'],
+                investigation: '你仔细检查校服外套，在内衬口袋中发现了一个手机和两粒药片。'
+            },
+            '制服包': { 
+                type: 'item', 
+                examine: '一个标准的学生制服包，里面似乎装着一些书本和个人物品。',
+                detail: '打开制服包，你发现里面有课本、笔记本和一些文具。',
+                hiddenItems: ['保人费催交单', '被涂鸦的书'],
+                investigation: '你仔细翻找制服包，在夹层中发现了一张催交单和一本被严重涂鸦的书。'
+            },
+            '死者手机': { 
+                type: 'item', 
+                examine: '一部智能手机，没有密码锁。屏幕有细微裂痕。',
+                detail: '手机可以直接打开，里面有聊天软件、日记软件和相册。',
+                investigation: '你打开手机，发现了其中的应用。'
+            },
+            '白色药片': { 
+                type: 'item', 
+                examine: '两颗未标识的白色药片，用透明小袋装着。',
+                detail: '药片没有明显的标识，需要进一步分析成分。',
+                investigation: '你仔细观察药片，发现上面有微小的"RX"标记，可能是处方药。'
+            },
+            '保人费催交单': { 
+                type: 'item', 
+                examine: '一张正式的费用催交通知，来自保证人公司。',
+                detail: '通知显示B闵莲如已拖欠两个月住宿管理费，语气严厉。',
+                investigation: '你在催交单背面发现了一行小字："再不交钱就取消资格"。'
+            },
+            '被涂鸦的书': { 
+                type: 'item', 
+                examine: '一本文学课本，封面和扉页被涂鸦破坏。',
+                hiddenItems: ['G的铁道工作日志'],
+                detail: '书上用红笔写满了侮辱性词汇，明显是有人故意破坏。',
+                investigation: '你用紫外线灯照射书页，发现了几行用隐形墨水写的字："他们不会放过我"。'
+            },
+                'G的铁道工作日志': {
+    type: 'item',
+    examine: '一本封面带有污渍的工作日志。',
+    investigation: `
+        <div class="system">📜 G高桥笃工作日志（修订版）</div>
+        
+        <h4>工作日志记录</h4>
+        <div class="chat-message">
+            <div class="chat-time">日期：2015年11月18日</div>
+            <div>记录人：高桥笃 | 值班时间：16:00-20:00</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">18:25</div>
+            <div>西郊线下行月台报告有异常情况。一名年轻女性在月台边缘徘徊，神情恍惚。准备上前询问时，列车进站信号灯亮起。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">18:27</div>
+            <div>该女性突然跳下轨道。立即按下紧急停车按钮，但为时已晚。列车制动距离不足，发生碰撞。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">18:28</div>
+            <div>拨打119急救和110报警。通知控制中心全线暂停运营。现场确认受害者已无生命体征。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">18:35</div>
+            <div>警方到达现场。描述事发经过，提交监控录像备份。因临近下班交接时间，记录较为简略。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">18:50</div>
+            <div>交接给夜班同事处理后续。下班时间已过，家中还有事需处理。</div>
+        </div>
+
+        <div class="system">🔍 补充说明（未被记录的想法）</div>
+        <div class="chat-message">
+            <div>其实我看到了更多细节... 那个女孩在跳下去前，一直盯着手机屏幕哭。她穿着校服，看起来很年轻，像是留学生。如果我当时能早一点发现异常，也许... 但下班时间快到了，想着要准时交班。现在想想，真是惭愧。</div>
+        </div>
+
+        <div class="system">📚 证言分析结果：已解锁相关词条和线索。</div>
+    `,
+    detail: '一本封面带有污渍的工作日志，详细内容需要在调查面板中分析。',
+    termUnlock: ['制度僵化'],
+    clue:'事发经过记录'
+},
+            '紫外线灯': { type: 'tool', examine: '便携式紫外线灯，可显示肉眼看不见的痕迹。', detail: '紫外线灯可以揭示隐形墨水书写或某些化学物质痕迹。' },
+            '化学试剂': { type: 'tool', examine: '化学分析试剂，可用于检测物质成分。', detail: '专业化学试剂，使用时需要小心。' },
+            '放大镜': { type: 'tool', examine: '高倍放大镜，用于观察微小细节。', detail: '可以放大观察物品的细微痕迹和特征。' }
+        };
+        // 组合配方 (保持不变，新增词条后会自动更新)
+        const combinations = {
+            '化学试剂+白色药片': { 
+                clue: '化学分析结果',
+                message: '你将白色药片与化学试剂混合，经过精确的化学分析，确认药片含有强效安眠成分，是治疗精神类疾病的处方药。',
+                termUnlock: '精神类疾病'  // 获得”精神类疾病”词条
+            },
+            '保人费催交单+紫外线灯': { 
+                clue: '威胁信分析',
+                message: '你用紫外线灯照射催交单，发现除了放大镜可见的文字外，还有一行用特殊墨水书写的文字："再不交钱，你和你家人会有麻烦"。',
+                termUnlock: '威胁' // 获得”威胁”词条
+            },
+            '被涂鸦的书+紫外线灯': {
+                clue: '隐形文字笔记',
+                message: '在紫外线灯照射下，被涂鸦的书页上显现出用隐形墨水书写的文字："他们不会放过我"。'
+            },
+            '保人费催交单+放大镜': {
+                clue: '催交单分析',
+                message: '你用放大镜仔细观察催交单，发现背面有手写的威胁性文字。'
+            },
+        
+        };
+
+        // --- 新增：案件还原数据结构 ---
+        const restorationTopics = {
+            'B_C_RELATION': {
+                title: '还原事项一：B闵莲如与C王秀英关系还原',
+                blanks: [
+                    { id: 'blank1', html: 'B闵莲如与C王秀秀英要钱的原因是因<span class="blank" id="blank1"></span>' },
+                    { id: 'blank2', html: 'C王秀英的态度为<span class="blank" id="blank2"></span>是因为<span class="blank" id="blank3"></span>的<span class="blank" id="blank4"></span>' },
+                    { id: 'choice1', html: 'C王秀英对B闵莲如的病情为', isChoice: true, options: [{ value: '知情', text: '知情' }, { value: '不知情', text: '不知情' }] },
+                    { id: 'blank5', html: 'C王秀英认为B闵莲如是<span class="blank" id="blank5"></span>' }
+                ],
+                correct: {
+                    blank1: '经济压力',
+                    blank2: '反对',
+                    blank3: '弟弟',
+                    blank4: '学费',
+                    blank5:'一家之主',
+                    choice1: '知情'
+                },
+                resultClue: '案件还原结论：B/C关系'
+            },
+            'B_D_RELATION': {
+                title: '还原事项二：B闵莲如与D黒木圭吾关系还原',
+                blanks: [
+                    { id: 'blank_d1', html: '4月：D以（<span class="blank" id="blank_d1"></span>）为由增收费用' },
+                    { id: 'blank_d2', html: '7月：对B的（<span class="blank" id="blank_d2"></span>）问题漠不关心' },
+                    { id: 'blank_d3', html: '11月：对（<span class="blank" id="blank_d3"></span>）更新消极拖延最终导致B的签证过期。' },
+                ],
+                correct: {
+                    blank_d1: '服务升级',
+                    blank_d2: '健康',
+                    blank_d3: '签证',
+                },
+                resultClue: '案件还原结论：B/D关系'
+            },
+             'B_E_RELATION': {
+    title: '还原事项三：B闵莲如与E周诗涵关系还原',
+    blanks:[
+        {id: 'blank_e1',html: 'E周诗涵最初以B的<span class="blank" id="blank_e1"></span>为由暗示其不合群。' },
+        {id: 'blank_e2',html: '随后通过<span class="blank" id="blank_e2"></span>使B逐渐被孤立。' },
+        {id: 'blank_e3',html: '在发现B信教后，霸凌升级为<span class="blank" id="blank_e3"></span>。' },
+        {id: 'blank_e4', html: '最终升级为以<span class="blank" id="blank_e4"></span>为名义的公开嘲讽。' }
+             ],
+    correct: {
+        blank_e1: '出身背景',
+        blank_e2: '活动排挤',
+        blank_e3: '宗教歧视',
+        blank_e4: '精神类疾病'
+    },
+    resultClue: '案件还原结论：B/E关系'
+             },
+             // 【在 restorationTopics 变量内部添加或替换此对象】
+             'B_F_RELATION': {
+    title: '还原事项四：B闵莲如与F李静怡关系还原',
+    blanks: [
+        { id: 'blank_f1', html: 'F李静怡最初对B闵莲如表现出（<span class="blank" id="blank_f1"></span>）' },
+        { id: 'blank_f2', html: '在E的压力下逐渐（<span class="blank" id="blank_f2"></span>）' },
+        { id: 'blank_f3', html: '面对霸凌事件选择（<span class="blank" id="blank_f3"></span>）' },
+        { id: 'blank_f4', html: '最终因（<span class="blank" id="blank_f4"></span>）而放弃帮助B' },
+    ],
+    correct: {
+        blank_f1: '同胞情谊',
+        blank_f2: '开始疏远',
+        blank_f3: '沉默见证',
+        blank_f4: '恐惧妥协',
+    },
+    resultClue: '案件还原结论：B/F关系',
+},
+'B_G_RELATION': {
+    title: '还原事项五：G高桥笃与B闵莲如关系还原',
+    blanks: [
+        { id: 'blank_g1', html: 'G高桥笃作为目击者，因工作疏忽未能及时干预，虽完成基本职责但存在（<span class="blank" id="blank_g1"></span>）'},
+    ],
+    correct: {
+        blank_g1: '制度僵化',
+    },
+    resultClue: '案件还原结论：G/B关系'
+},
+'B_H_RELATION': {
+    title: '还原事项六：B闵莲如与H闵建国关系还原（原生家庭创伤）',
+    blanks: [
+        { id: 'blank_h1', html: '当B闵莲如取得学业上的优秀成绩时，H闵建国对她的努力表示<span class="blank" id="blank_h1"></span>，认为其成就毫无用处。' },
+        { id: 'blank_h2', html: 'H闵建国反复向B强调，供她留学支付<span class="blank" id="blank_h2"></span>是一种“情分”，这种态度体现了<span class="blank" id="blank_h3"></span>。' },
+        { id: 'blank_h3', html: '在B闵莲如留学期间面临生存危机，向H求助时，H非但拒绝，反而说出极端恶毒的言语，这是对其生存意志的<span class="blank" id="blank_h4"></span>。' },
+        { id: 'blank_h4', html: 'H的核心目的并非支持B的个人发展，而是通过控制学费的给予，来维持对B的心理控制和情感压制。' }
+    ],
+    correct: {
+        blank_h1: '成就贬低',
+        blank_h2: '学费',
+        blank_h3: '施恩心态',
+        blank_h4: '极限压榨',
+    },
+    resultClue: '案件还原结论：B/H关系'
+}
+        };
+
+        // 所有还原所需的词条
+        const requiredTermsForRestore = ['制度僵化','经济压力', '反对', '弟弟', '学费', '一家之主', '精神类疾病', '威胁', '压力', '服务升级', '健康', '签证', '服务升级', '出身背景','活动排挤','宗教歧视','精神类疾病','同胞情谊' , '开始疏远', '沉默见证',
+      '恐惧妥协','成就贬低','极限压榨','施恩心态'];
+
+        // 事件还原记录
+        const restoreRecords = {
+            'B/C/201504': { title: 'B闵莲如与C王秀英 - 2015年4月', content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 19:23</div><div>妈妈，保证人D黒木先生又要求额外费用了，说是什么"特殊管理费"，还要我买礼品打点学校关系。总共需要8万日元，能转给我吗？</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 21:45</div><div>怎么又要钱？上个月不是刚给过生活费吗？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 21:46</div><div>这是保证人另外要求的，说不交会影响我在学校的评价。而且他说这是在日本办事的规矩...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 21:50</div><div>莲如，家里现在真的拿不出这么多钱。你弟弟在上预科班，一节课就要好几百，下个月还要交学费。你在外面就不知道节省一点吗？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 21:52</div><div>这不是我要乱花钱，是保证人要求的。他说不按要求做可能会被退学...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 21:55</div><div>你就不能跟老师说说情况吗？非要什么都听保证人的？还有，你看看你，<strong>3</strong>个月才发一条信息，一联系就是要钱。我是你妈，不是提款机！</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 21:56</div><div>......我知道了。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 22:10</div><div>你先自己想想办法，我这边看看能不能凑一点。但别抱太大希望,不要像上个月一样和你爸吵架了，听到没！</div></div>`, termUnlock: '经济压力' },
+            'B/C/201507': { title: 'B闵莲如与C王秀英 - 2015年7月', content: `<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:15</div><div>莲如，你爸爸H闵建国跟我说了昨天吵架的事。你怎么能跟你爸顶嘴呢？他现在气得不行。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 22:16</div><div>妈，我只是说想转学，他就说我浪费钱，说女孩子读那么多书没用...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:18</div><div>你爸说话是重了点，但你现在确实花了很多钱。保证人费用、生活费，还有你弟弟的预科班...</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 22:20</div><div>[语音消息，带着哭腔]妈...我喘不过气...心跳好快...手麻...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:21</div><div>莲如？莲如你怎么了？快说话！</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:25</div><div>莲如！回话！我打电话给保证人！</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 23:40</div><div>医生说你是呼吸性碱中毒，情绪太激动导致的。你怎么这么不小心？年初才带你看过中医，说你是心脾两虚，让你好好调理。我给你寄的补品有没有认真吃？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:30</div><div>妈，我出院了。自己坐末班车回来的。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 08:32</div><div>保证人D黒木先生没去接你吗？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:33</div><div>他说太晚了不方便。我一个人坐末班电车回来的。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 08:35</div><div>莲如，你要记住，你是这个家的希望。妈妈把所有都赌在你身上了，你弟弟还小，这个家还需要你来撑起来。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:36</div><div>...有的。我知道。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 08:38</div><div>你要坚强，要争气。等你出息了，咱们家就能过上好日子。别让你爸看扁了我们母女。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:39</div><div>嗯，我会的。</div></div>`, termUnlock: '一家之主' },
+            'B/C/201510': { title: 'B闵莲如与C王秀英 - 2015年10月', content: `<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-10-31 19:23</div><div>莲如，有个好消息要告诉你。你弟弟的留学手续办下来了，下个月就能去东京读书了。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-31 19:24</div><div>弟弟也要来？可是妈妈，学费怎么办？我现在的生活费都很紧张...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-10-31 19:26</div><div>这就是我要跟你商量的事。你现在的学校太远了，照顾不到弟弟。我打听过了，今天刚好是10月最后一天，你爸明天发工资了，你早上去问问他。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-31 19:27</div><div>好的没我知道了，保证人D黒木先生那边...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-10-08 19:30</div><div>你别操心，你弟弟的留学费用家里已经准备好了。长姐如母，你现在要做的就是好好照顾弟弟。他第一次出国，什么都不懂。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-08 19:31</div><div>可是妈妈，我自己的学业也很重要啊。而且转学需要很多手续...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-10-08 19:35</div><div>莲如，长姐如母，你要记住这个道理。弟弟还小，你是姐姐，照顾他是你的责任。妈妈在国内走不开，只能靠你了。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-08 19:36</div><div>......我明白了。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-10-08 19:38</div><div>转学的事抓紧办，下个月弟弟就要来了。长姐如母，你要有个当姐姐的样子。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-08 19:39</div><div>好的，妈妈。</div></div>`, termUnlock: '弟弟' },
+            'B/D/201511': {
+                title: 'B闵莲如与D黒木圭吾 - 2015年11月',
+                content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-02 10:15</div><div>D先生，我的在留卡下个月马上要到期了，应该准备什么资料</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-11-02 10:20</div><div>我也不是很清楚呀，你去问问学校</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-02 10:22</div><div>学校让我来问你…入管局要求这周五前提交，否则会影响合法居留...</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-11-02 10:25</div><div>具体啥资料我也不知道啊，我不负责这个。你应该早点准备。我明天要去大阪出差，回来再说吧。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-02 10:26</div><div>但是逾期的话会有不良记录...</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-11-02 10:30</div><div>留学生要学会提前规划。我还有会议，先这样。</div></div>`,
+                termUnlock: '签证'
+            },
+            'B/D/201507': {
+                title: 'B闵莲如与D黒木圭吾 - 2015年7月',
+                content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 22:20</div><div>D先生，我身体很不舒服，能送我去医院吗？</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-07-03 22:22</div><div>现在？我在忙。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 22:23</div><div>我呼吸困难，感觉快要晕倒了...</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-07-03 22:25</div><div>叫救护车吧，号码是119。这种事情不要总是依赖别人。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 22:26</div><div>可是我的日语不够好...</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-07-03 22:28</div><div>那就好好学习日语。我还有客人，先挂了。</div></div>`,
+                termUnlock: '健康'
+            },
+            'B/D/201504': {
+                title: 'B闵莲如与D黒木圭吾 - 2015年4月',
+                content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-01 15:00</div><div>D先生，我刚收到通知要交新的管理费，可以告诉我包含了什么服务吗</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-04-01 15:05</div><div>这是根据市场行情调整的。物价上涨，我们的服务成本也增加了。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-01 15:06</div><div>具体有些什么内容呢？</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-04-01 15:10</div><div>包含紧急联络、文件处理、生活指导等全套服务。觉得贵可以找其他保证人。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-01 15:11</div><div>好的我知道了，如果来不及缴费会怎么样</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-04-01 15:15</div><div>那就按时交费。下周一是截止日期，逾期会有滞纳金。</div></div>`,
+                termUnlock: '服务升级'
+            },
+              'B/E/201504':{ title: 'B闵莲如与E周诗涵 - 2015年4月 (初识)',
+    content: `<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-04-10 16:30</div><div>听说你是从乡下来的？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-10 16:31</div><div>嗯，刚来，还不太习惯。</div></div><div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-04-10 16:32</div><div>怪不得，你的口音挺特别的。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-10 16:35</div><div>嗯…不过大家可能不太好接近你，别太往心里去。</div></div>`,
+    termUnlock: '出身背景'
+            },
+             'B/E/201507': {
+             title: 'B闵莲如与E周诗涵 - 2015年7月 (渐行渐远)',
+             content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-15 14:00</div><div>听说你们周末要去东京塔玩？能带上我吗？</div></div><div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-07-15 14:02</div><div>啊，我们这次是几个老朋友的聚会，下次吧。下次一定。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-15 14:05</div><div>哦...好吧。</div></div><div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-07-15 14:10</div><div>你最近怎么老是自己一个人在图书馆？多出来走走啊。</div></div>`,
+            termUnlock: '活动排挤'
+            },
+            'B/E/201510': {
+             title: 'B闵莲如与E周诗涵 - 2015年10月 (霸凌升级)',
+             content: `<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-10-22 17:50</div><div>听说你最近在看海镜神教教义？学校里信这个的人可不多啊，真是个奇怪的人</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-22 17:52</div><div>我只是...只是想找点心灵寄托。</div></div><div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-10-22 17:55</div><div>心灵寄托？我上个月听F说有人看到你对着空气说话。你要小心，被我发现，你可就不好混了。</div></div>`,
+             termUnlock: '宗教歧视'
+            },
+            'B/F/201504': {
+            title: 'F李静怡与B闵莲如 - 2015年4月 (初识友善)',
+            content: `<div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-04-08 12:00</div><div>你是新来的闵同学吧？我叫李静怡，也是从中国来的。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-08 12:01</div><div>啊，你好！终于有人和我说话了...</div></div><div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-04-08 12:05</div><div>别客气，互相照应嘛。</div></div>`,
+            termUnlock: '同胞情谊'
+            },
+
+            'B/F/201507': {
+            title: 'F李静怡与B闵莲如 - 2015年7月 (开始疏远)',
+            content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-15 15:00</div><div>静怡，这周末要不要一起去逛街？</div></div><div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-07-15 15:02</div><div>啊...这周末我有点事。最近E说要一起复习，可能没什么时间...</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-15 15:05</div><div>哦...好吧。</div></div>`,
+            termUnlock: '开始疏远'
+            },
+            'B/F/201509': {
+             title: 'F李静怡与B闵莲如 - 2015年9月 (沉默见证)',
+             content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-09-20 17:00</div><div>静怡，你知道我的书被写东西的事吗？还有你为什么要和别人讲我的坏话!</div></div><div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-09-20 17:02</div><div>（低头）我...我不太清楚。E她们只是开玩笑的，你别太在意。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-09-20 17:05</div><div>这算是玩笑吗？</div></div><div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-09-20 17:10</div><div>对不起，我该去上课了。</div></div>`,
+             termUnlock: '沉默见证'
+            },
+            'B/F/201511': {
+            title: 'F李静怡与B闵莲如 - 2015年11月 (最后对话)',
+            content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-15 11:00</div><div>静怡，我可能要转学了。</div></div><div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-11-15 11:02</div><div>是吗...那也好。对不起...我也很害怕。E说如果我和你走太近，就会用同样的方式对我。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-15 11:05</div><div>连你都不愿意帮我说句话吗？</div></div><div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-11-15 11:10</div><div>我真的...对不起。</div></div>`,
+            termUnlock: '恐惧妥协'
+            },
+            'B/H/201503': {
+    title: 'H闵建国与B闵莲如 - 2015年3月 (成绩漠视)',
+    content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-03-20 16:30</div><div>爸爸，我这次日语能力测试N1得了124分。</div></div><div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-03-20 17:05</div><div>哦，知道了。女孩子读书好有什么用，能给你弟弟帮上忙吗？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-03-10 17:10</div><div>我只是想证明自己，从弟弟出生那一刻起，你什么时候正眼瞧过我？</div></div><div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2016-03-20 17:40</div><div>少和我争这些有的没的，你弟弟明天要去参加训练营，你把他的行李准备一下。</div></div>`,
+    termUnlock: '成就贬低'
+            },
+            'B/H/201507': {
+          title: 'H闵建国与B闵莲如 - 2015年7月 (经济比较)',
+             content: ` <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 18:35</div><div>我申请了学校的奖学金**，我已经不需要你给我的毕业礼物了，请你不要再提了。</div></div><div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-07-03 18:40</div><div>你这是什么态度？我给你准备礼物是你的福气，你现在翅膀硬了是不是？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 18:42</div><div>福气？对我来说，那些只是你**廉价的补偿**！我不需要你用钱来证明你是一个“好父亲”。</div></div><div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-07-03 18:45</div><div>闭嘴！你吃我的住我的，**你的学费是我付的**，你现在用我的钱拿了个奖学金，有什么好得意的？</div></div> <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 18:50</div><div>那请你把我的学费告诉我具体是多少！我毕业后会还给你，连同这些年来你所谓的“情分”！</div></div> <div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-07-03 18:55</div><div>你真是不知好歹！我看你是在国外待疯了！你还钱？你以为你是个什么东西？**你一辈子都还不清！</div></div>
+        <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2018-07-20 19:00</div><div>你从没听过我认真讲话</div></div>`,
+        termUnlock: '施恩心态'
+            },
+            'B/H/201511': {
+            title: 'H闵建国与B闵莲如 - 2015年11月 (留学困境中的绝望求助与诅咒)',
+             content: `
+        <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-15 14:10</div><div>爸爸，我现在真的没有钱了，我这个月下发的催缴单被逾期处理了，拜托了。</div></div> <div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-11-15 14:15</div><div>你又在外面搞什么名堂？我让你好好读书，你给我惹麻烦！</div></div>
+        <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-15 14:20</div><div>不是...只是生活费和学费的周转出了问题，我马上就要交学费了，不然会被退学。</div></div>
+        <div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-11-15 14:25</div><div>被退学就退学！少给我找借口！</div></div>
+        <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-15 14:30</div><div>我...我正在想办法。但是现在我真的快饿死了，我求您了，看在我是您女儿的份上...</div></div>
+        <div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-11-15 14:35</div><div>**你是我的女儿？你是来拖垮我的！日本人的狗崽种，**你干脆现在就去死！别再浪费我的钱！</div></div> <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-15 14:40</div><div>。。。。</div></div> `,
+     termUnlock: '极限压榨',
+    
+}
+
+
+        };
+        // DOM元素
+        const output = document.getElementById('output');
+        const inventoryEl = document.getElementById('inventory-items');
+        const cluesEl = document.getElementById('clues-list');
+        const termsEl = document.getElementById('terms-list');
+        const boxContent = document.getElementById('box-content');
+        const boxCounter = document.getElementById('box-counter');
+        const examineBox = document.getElementById('examine-box');
+        const restorePanel = document.getElementById('restore-panel');
+        const termOptions = document.getElementById('term-options');
+        const restoreSearch = document.getElementById('restore-search');
+        const restoreResult = document.getElementById('restore-result');
+        const searchRestoreBtn = document.getElementById('search-restore-btn');
+        const archiveList = document.getElementById('archive-list');
+        const searchRestoreDiv = document.querySelector('.search-restore');
+        // 新增 DOM 元素
+        const restoreSelector = document.getElementById('restore-selector');
+        const currentRestoreTitle = document.getElementById('current-restore-title');
+        const restorationBlanksEl = document.getElementById('restoration-blanks');
+
+
+        // 初始化游戏
+        function initGame() {
+            updateInventory();
+            updateClues();
+            updateTerms();
+            updateBoxCounter();
+            renderRestorationPanel(gameState.currentRestorationTopic); // 初始渲染
+            updateArchive();
+            startGame();
+        }
+
+        // 开始游戏
+        function startGame() {
+            addToOutput('<div class="sela">SELA 助手：</div>系统启动完成。当前时间：2015年11月18日，21:37。');
+            addToOutput('<div class="sela">SELA 助手：</div>A陈默先生，晚上好。我是您的智能案件分析助手SELA，很高兴为您服务。');
+            addToOutput('<div class="sela">SELA 助手：</div>刚刚收到一份新的委托，案件编号：E-737。委托方C王秀英女士，其女B闵莲如，一名在东京的留学生，于三日前在月台卧轨身亡。警方结论为自杀。');
+            addToOutput('<div class="sela">SELA 助手：</div>但委托人坚持认为其女性格开朗，自杀结论存疑。她提供了死者的部分遗物，已送达您的事务所。');
+            addToOutput('<div class="sela">SELA 助手：</div>我已在您的物品栏中初始化了这些遗物和调查工具，并在词条库中添加了<span class="highlight">反对</span>和<span class="highlight">学费</span>。请先点击<span class="highlight">"打开调查面板"</span>按钮开始物证分析。');
+            addToOutput('<div class="sela">SELA 助手：</div>调查流程：1. 搜索物品获得线索 → 2. 组合分析获得线索和词条 → 3. 查看聊天记录获得更多词条 → 4. 完成案件还原');
+        }
+
+        // 添加到输出区域
+        function addToOutput(html) {
+            output.innerHTML += html + '<br><br>';
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // 更新物品栏显示
+        function updateInventory() {
+            inventoryEl.innerHTML = '';
+            gameState.inventory.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'item-box';
+                div.textContent = item;
+                div.onclick = () => {
+                    if (item === '死者手机') {
+                        openDeadPhoneMenu();
+                    } else {
+                        addToBox(item);
+                    }
+                };
+                inventoryEl.appendChild(div);
+            });
+            gameState.tools.forEach(tool => {
+                const div = document.createElement('div');
+                div.className = 'item-box tool-box';
+                div.textContent = tool;
+                div.onclick = () => addToBox(tool);
+                inventoryEl.appendChild(div);
+            });
+        }
+
+// 手机互动函数 (保持不变)
+function openDeadPhoneMenu() {
+ const menu = `<div class="system">📱 死者手机已解锁，请选择要打开的应用：</div><div class="toolbox"><button onclick="openPhotoAlbum()">打开相册 (相册)</button><button onclick="openDiaryApp()">打开日记 (日记)</button><button onclick="openChatApp()">打开聊天软件 (聊天)</button></div>`;
+addToOutput(menu);
+        }
+        function openPhotoAlbum() {
+            addToOutput('<div class="system">🖼️ 相册内容：</div><div class="sela">插着数字16的蛋糕，日期：2014/12/23</div>');
+        }
+        function openDiaryApp() {
+            const passwordPrompt = `<div class="system">🔒 日记软件：请输入6位密码。</div><input type="text" id="diary-password" class="search-input" placeholder="6位数字" maxlength="6" style="width: 150px; display: inline-block;"><button onclick="checkDiaryPassword()">确认</button>`;
+            addToOutput(passwordPrompt);
+        }
+ function checkDiaryPassword() {
+ const password = document.getElementById('diary-password').value;
+const correctPassword = '981223'; 
+ if (password === correctPassword) {
+ addToOutput('<div class="system">✅ 密码正确！正在打开日记...</div>')
+
+const diaryContent = `'<div class="system">📝 B闵莲如日记内容 (2015年4月 - 11月)</div>
+
+        <h3>2015年4-6月</h3>
+        <div class="chat-message">
+            <div class="chat-time">2015年4月10日</div>
+            <div>来东京一个月了！虽然日语还不太流利，蓝瘦香菇~但老师们都很耐心。<br>E周诗涵看起来是个很受欢迎的同学，希望能和她成为朋友。<br>神马都是浮云~来这里读书是正确的选择。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">2015年5月15日</div>
+            <div>第一次期中考试结束了，成绩比想象中好！<br>老师说按照这个进度，明年一定能考上理想的大学。<br>虽然保证人费用又涨了，但为了未来值得坚持。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">2015年6月20日</div>
+            <div>开始适应这里的生活了。今天独自去了原宿，看到很多有趣的小店。<br>路过一个宗教团体的宣传点，但完全没有在意。<br>现在最重要的是学习，其他的都不重要。</div>
+        </div>
+
+        <h3>2015年7-9月</h3>
+        <div class="chat-message">
+            <div class="chat-time">2015年7月5日</div>
+            <div>从医院回来了，医生说是过度紧张导致的呼吸困难。<br>为什么E周诗涵和其他人总是避开我？是我哪里做得不够好吗？<br>妈妈打电话又提起弟弟的学费，感觉压力好大。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">2015年8月20日</div>
+            <div>暑假快结束了，一个人在宿舍写作业。<br>D先生说转保证人要付10w违约金，根本就是在威胁我。<br>有时候会莫名其妙地流泪，但必须坚持下去。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">2015年9月15日</div>
+            <div>又被分到一个人做小组作业，老师好像也默认了这种安排。<br>F今天看到我时欲言又止，最后还是走开了。</div>
+        </div>
+
+        <h3>2015年10月上旬</h3>
+        <div class="chat-message">
+            <div class="chat-time">2015年10月5日</div>
+            <div>今天在便利店门口，**海镜神教**的人在发传单。<br>一个很温柔的阿姨对我说："孩子，你看起来很疲惫。"<br>突然就很想哭，但还是礼貌地拒绝了。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">2015年10月12日</div>
+            <div>又在同一个地方遇到那个阿姨。她记得我，还问我最近好不好。<br>第一次有人这样关心我，虽然知道可能是传教的手段...<br>但还是收下了她给的小册子。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">2015年10月18日 ★ 关键转折</div>
+            <div>今天收到了有关**海镜神教**的座谈会。<br>教主爷爷悬空着，手里散发着蓝光，他说："人生如海，每个人都是映照彼此的镜子。你的痛苦，我们都懂。"<br>当场就哭出来了，好像终于找到了能理解我的人。<br>他们说下周有更深入的分享会，我决定再去看看。</div>
+        </div>
+
+        <h3>2015年10月下旬</h3>
+        <div class="chat-message">
+            <div class="chat-time">2015年10月22日</div>
+            <div>参加了**海镜神教**的冥想会。<br>闭上眼睛时，教主身边围着天使，的声音很温柔："放下所有负担，让大海带走你的痛苦。"<br>那一刻，真的感觉轻松了很多。</div>
+        </div>
+        <div class="chat-message">
+            <div class="chat-time">2015年10月28日</div>
+            <div>我告教会人员我的所有烦恼：D先生的敲诈、妈妈的压力、在学校的孤立。<br>他说这些都是“俗世的业障”，只要信仰虔诚，一切都会迎刃而解。<br>我好像看到了**希望**。</div>
+        </div>
+
+        <h3>2015年11月</h3>
+        <div class="chat-message">
+<div class="chat-time">2015年11月5日</div>
+            <div> 唵喃喀嗒哩嘶,他们以噫吠陀缝合眼睑 黑暗凝结成透明的真言<br>教主说要有@#$，但@#$能解决签证问题吗？</div>
+        </div>
+ <div class="chat-message">
+<div class="chat-time">2015年11月12日</div>
+<div>E在班里嘲笑我，说我入了奇怪的宗教。<br>连F都用异样的眼光看我。<br>教主说让我使用海镜秘术报复，可是...<br>真的好累。**宗教带来的平静只是暂时的幻觉。**</div>
+ </div>
+ <div class="chat-message">
+ <div class="chat-time">2015年11月15日 ★ 事发前日</div>
+<div>我让实验用的老鼠融合在了一起@#$$#@.冰层下的体温复诵： “佉祢钵吒蒙婆悉” 当韵脚卡进齿轮 房间开始脱落吽咇噼啪咪懑疒萼笯<br>教主说"大海会包容一切" 他们以噫吠陀缝合眼睑 黑暗凝结成透明的真言<br>**在海上铁轨，赴归于大海…** 这就是我的归宿吧。</div>
+ </div>`
+addToOutput(diaryContent);
+ }
+
+
+    if (password === correctPassword) {
+        addToOutput(diaryContent);
+        // 解锁与宗教相关的线索和词条
+        if (!gameState.terms.includes('海镜神教')) {
+            gameState.terms.push('海镜神教');
+            updateTerms();
+            addToOutput('<div class="sela">SELA 助手：从日记中提取到新词条：<span class="highlight">海镜神教</span></div>');
+        }
+    } else {
+        addToOutput('<div class="system">❌ 密码错误，请重新输入。</div>');
+    }
+}
+        function openChatApp() {
+            addToOutput('<div class="system">💬 聊天软件：</div><div class="sela">聊天记录已损坏，请使用<span class="highlight">案件还原系统</span>中的<span class="highlight">事件还原搜索</span>功能进行还原。格式为：人物1/人物2/年月 (例如：B/C/201504)</div>');
+        }
+         // 更新线索列表 (新增：线索点击查看内容)
+        function updateClues() {
+            cluesEl.innerHTML = '';
+            gameState.clues.forEach(clue => {
+                const div = document.createElement('div');
+                div.className = 'clue';
+                div.textContent = clue;
+                div.onclick = () => viewClueContent(clue);
+                cluesEl.appendChild(div);
+            });
+        }
+        
+        // 线索内容展示函数
+        function viewClueContent(clueName) {
+            let content = '';
+            if (clueName === '案件还原结论：B/C关系') {
+                content = '<div class="sela">案件还原结论：</div>B闵莲如因在日本面临<span class="highlight">经济压力</span>向母亲C王秀英求助，但C王秀英持<span class="highlight">反对</span>态度，因为家庭资源优先用于<span class="highlight">弟弟</span>的<span class="highlight">学费</span>。尽管C王秀英对女儿的病情<span class="highlight">知情</span>，却仍坚持要求B闵莲如承担<span class="highlight">一家之主</span>的责任，这种矛盾的态度加剧了母女关系的紧张。';
+            } else if (clueName === '案件还原结论：B/D关系') {
+                content = '<div class="sela">案件还原结论：</div>保证人D黒木圭吾在4月以<span class="highlight">服务升级</span>为由增收费用；7月对B的<span class="highlight">健康</span>问题漠不关心；11月对<span class="highlight">签证</span>更新消极拖延。这反映了保证人的<span class="highlight">失职</span>行为，最终导致B的<span class="highlight">手续延误</span>，使其在日居留面临巨大风险。';
+                 } else if (clueName === '案件还原结论：B/E关系') {
+                content = '<div class="sela">案件还原结论：</div>E周诗涵在4月以<span class="highlight">出身背景</span>为由嘲笑B闵莲如； 随后通过<span class="highlight"活动排挤</span>使B逐渐被孤立。 在发现B信教后，霸凌升级为<span class="highlight"宗教歧视</span>。最终升级为以<span class="highlight">精神类疾病</span>为名义的公开嘲讽。' ;
+               } else if (clueName === '案件还原结论：B/F关系') {
+                content = '<div class="sela">案件还原结论：</div>F李静怡在4月因<span class="highlight">同胞情谊</span>与B闵莲如成为朋友； 后期因畏惧E周诗涵的孤立<span class="highlight"开始疏远</span>使B逐渐被孤立。 在B被E宗教歧视后<span class="highlight">沉默见证</span>。最终屈服于E的淫威<span class="highlight">恐惧妥协</span>忽略朋友的感受。' ;
+              } else if (clueName === '案件还原结论：G/B关系'){
+               content = '<div class="sela">案件还原结论： G高桥笃作为目击者，因工作疏忽未能及时干预，虽完成基本职责但存在<span class="highlight">制度僵化</span>,从而导致了悲剧的发生。';
+            } else if (clueName === '案件还原结论：B/H关系'){
+               content = '<div class="sela">案件还原结论： B闵莲如与H闵建国的关系是B所有心理创伤和仇恨的根源。H长期对B进行<span class="highlight">性别歧视和价值否定</span>，通过<span class="highlight">施恩心态和极限压榨</span>切断B的生存资源，最终导致B对原生家庭的彻底<span class="highlight">情感决裂和反噬</span>。';
+            } else if (clueName === '隐形文字笔记') {
+                 content = '<div class="system">隐形文字笔记：</div>文字内容为："他们不会放过我"，暗示B闵莲如受到他人的威胁和压迫。';
+            } else if (clueName === '催交单分析') {
+                 content = '<div class="system">催交单分析：</div>放大镜发现背面手写的威胁性文字，内容是关于催交费用。';
+            } else if (clueName === '威胁信分析') {
+                content = '<div class="system">威胁信分析：</div>紫外线灯照射催交单发现："再不交钱，你和你家人会有麻烦"。证实B闵莲如受到了人身威胁。';
+            } else if (clueName === '日记内容：无法承受的压力') {
+                 content = '<div class="system">日记内容：</div>“没有人能理解我，妈妈只关心弟弟和钱。我好累，真的快撑不住了。”，表明B闵莲如在家庭和经济的双重压力下，精神已濒临崩溃。';
+            }
+            else {
+                content = `<div class="system">线索：${clueName}</div>：这是一个重要的案件要素，请通过调查面板或还原系统获取更多详细描述。`;
+            }
+            addToOutput(`<div class="sela">SELA 助手：</div>正在为您展示线索<span class="highlight">${clueName}</span>的详细内容：<br>${content}`);
+        }
+
+        // 更新词条库
+        function updateTerms() {
+            termsEl.innerHTML = '';
+            gameState.terms.forEach(term => {
+                const div = document.createElement('div');
+                div.className = 'term-box';
+                div.textContent = term;
+                div.onclick = () => useTermInBlank(term);
+                termsEl.appendChild(div);
+            });
+            updateTermOptions();
+        }
+
+        // 更新填空选项
+        function updateTermOptions() {
+            termOptions.innerHTML = '';
+            gameState.terms.forEach(term => {
+                const span = document.createElement('span');
+                span.className = 'term-option';
+                span.textContent = term;
+                span.onclick = () => useTermInBlank(term);
+                termOptions.appendChild(span);
+            });
+        }
+
+        // 更新归档列表 (保持不变)
+        function updateArchive() {
+            archiveList.innerHTML = '';
+            if (gameState.viewedRecords.size === 0) {
+                archiveList.innerHTML = '<div class="empty-box">已查看的聊天记录将自动归档到此处</div>';
+                return;
+            }
+            const sortedKeys = Array.from(gameState.viewedRecords).sort();
+
+            sortedKeys.forEach(key => {
+                const record = restoreRecords[key];
+                if (record) {
+                    const div = document.createElement('div');
+                    div.className = 'archive-item';
+                    div.textContent = record.title;
+                    div.onclick = () => {
+                        restoreResult.innerHTML = `<h4>${record.title}</h4>${record.content}`;
+                        restoreResult.style.display = 'block';
+                    };
+                    archiveList.appendChild(div);
+                }
+            });
+        }
+
+        // 渲染还原面板内容
+        function renderRestorationPanel(topicKey) {
+            const topic = restorationTopics[topicKey];
+            currentRestoreTitle.textContent = topic.title;
+            restorationBlanksEl.innerHTML = '';
+            
+            topic.blanks.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'question';
+                div.innerHTML = item.html;
+
+                if (item.isChoice) {
+                    item.options.forEach(option => {
+                        const choiceSpan = document.createElement('span');
+                        choiceSpan.className = 'choice-option';
+                        choiceSpan.textContent = option.text;
+                        choiceSpan.setAttribute('data-value', option.value);
+                        choiceSpan.setAttribute('data-choice-id', item.id);
+                        choiceSpan.onclick = (e) => selectChoice(e.target, topicKey);
+                        div.appendChild(choiceSpan);
+                    });
+                }
+                restorationBlanksEl.appendChild(div);
+            });
+
+            // 重新设置填空点击事件
+            setupFillBlanks();
+        }
+
+        // 设置填空系统
+        function setupFillBlanks() {
+            const blanks = document.querySelectorAll('.blank');
+            blanks.forEach(blank => {
+                blank.onclick = (e) => {
+                    // 只对当前主题的空白生效
+                    const currentTopicBlanks = document.querySelectorAll('#restoration-blanks .blank');
+                    currentTopicBlanks.forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    gameState.currentBlank = e.target.id;
+                };
+            });
+        }
+
+        // 选择题点击事件
+        function selectChoice(target, topicKey) {
+            const topic = restorationTopics[topicKey];
+            const choiceId = target.getAttribute('data-choice-id');
+            // 清除当前主题下所有同ID选择题的选中状态
+            document.querySelectorAll(`[data-choice-id="${choiceId}"]`).forEach(c => c.classList.remove('selected'));
+            target.classList.add('selected');
+            
+            // 将选择值存储到临时的 gameState.selectedChoice 结构中
+            if (!gameState.selectedChoice) gameState.selectedChoice = {};
+            if (!gameState.selectedChoice[topicKey]) gameState.selectedChoice[topicKey] = {};
+            gameState.selectedChoice[topicKey][choiceId] = target.getAttribute('data-value');
+        }
+
+        // 在填空中使用词条
+        function useTermInBlank(term) {
+            if (gameState.currentBlank) {
+                const blank = document.getElementById(gameState.currentBlank);
+                blank.textContent = term;
+                blank.setAttribute('data-term', term);
+            }
+        }
+
+        // 更新调查框计数器 (保持不变)
+        function updateBoxCounter() {
+            boxCounter.textContent = `已放置 ${gameState.boxItems.length}/3 个物品`;
+        }
+
+        // 添加新物品到物品栏 (保持不变)
+        function addNewItemToInventory(itemName) {
+            if (!gameState.inventory.includes(itemName)) {
+                gameState.inventory.push(itemName);
+                updateInventory();
+                addToOutput(`<div class="system"> 新物品已加入物品栏：<span class="highlight">${itemName}</span></div>`);
+                if (items[itemName]) {
+                    addToOutput(`<div class="sela">SELA 助手：</div>${items[itemName].examine}`);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        // 添加新词条 (保持不变)
+        function addNewTerm(term) {
+            if (!gameState.terms.includes(term)) {
+                gameState.terms.push(term);
+                updateTerms();
+                addToOutput(`<div class="system">📚 获得新词条：<span class="highlight">${term}</span></div>`);
+                checkAllTermsCollected();
+                return true;
+            }
+            return false;
+        }
+
+        // 添加新线索 (保持不变)
+        function addNewClue(clue) {
+            if (!gameState.clues.includes(clue)) {
+                gameState.clues.push(clue);
+                updateClues();
+                addToOutput(`<div class="system">🔍 获得新线索：<span class="highlight">${clue}</span></div>`);
+                return true;
+            }
+            return false;
+        }
+
+        // 检查是否看完所有聊天记录 (保持不变)
+        function checkAllRecordsViewed() {
+            const allRecords = Object.keys(restoreRecords);
+            const hasViewedAll = allRecords.every(key => gameState.viewedRecords.has(key));
+            
+            if (hasViewedAll && !gameState.allRecordsViewed) {
+                gameState.allRecordsViewed = true;
+                addToOutput('<div class="sela">SELA 助手：</div>所有聊天记录已归档。请在“聊天记录归档”面板中查阅。');
+            }    
+            return hasViewedAll;
+        }
+
+        // 检查是否集齐所有词条 (更新：包含新词条)
+        function checkAllTermsCollected() {
+            const hasAllTerms = requiredTermsForRestore.every(term => gameState.terms.includes(term));
+            
+            if (hasAllTerms) {
+                addToOutput('<div class="sela">SELA 助手：</div>恭喜！您已经收集了所有必要的词条。');
+            }
+        }
+
+        // 添加到调查框 (保持不变)
+        function addToBox(itemName) {
+            if (gameState.boxItems.length >= 3) {
+                addToOutput('<div class="system">调查面板已满（最多3个物品）。请先移除一些物品再添加新的。</div>');
+                return;
+            }
+            if (!gameState.boxItems.includes(itemName)) {
+                gameState.boxItems.push(itemName);
+                updateBoxDisplay();
+                updateBoxCounter();
+                addToOutput(`<div class="system">已将 <span class="highlight">${itemName}</span> 放入调查面板。</div>`);
+                if (items[itemName]) {
+                    addToOutput(`<div class="sela">SELA 助手：</div>${items[itemName].examine}`);
+                    if (items[itemName].detail) {
+                        addToOutput(`<div class="system">详细观察：${items[itemName].detail}</div>`);
+                    }
+                }
+                if (gameState.boxItems.length > 1) {
+                    addToOutput('<div class="sela">SELA 助手：</div>调查面板中有多个物品，您可以点击"调查物品"按钮进行综合分析。');
+                }
+            }
+        }
+
+        // 更新调查框显示 (保持不变)
+        function updateBoxDisplay() {
+            boxContent.innerHTML = '';
+            if (gameState.boxItems.length === 0) {
+                boxContent.innerHTML = '<div class="empty-box">请从物品栏选择物品放入...</div>';
+                return;
+            }
+            gameState.boxItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'item-in-box';
+                div.textContent = item;
+                div.onclick = () => removeFromBox(item);
+                boxContent.appendChild(div);
+            });
+        }
+
+        // 从调查框移除物品 (保持不变)
+        function removeFromBox(itemName) {
+            const index = gameState.boxItems.indexOf(itemName);
+            if (index > -1) {
+                gameState.boxItems.splice(index, 1);
+                updateBoxDisplay();
+                updateBoxCounter();
+                addToOutput(`<div class="system">已从调查面板移除 <span class="highlight">${itemName}</span>。</div>`);
+            }
+        }
+
+       // 调查物品 - 组合分析逻辑 (已修改)
+function investigateItem() {
+    if (gameState.boxItems.length === 0) {
+        addToOutput('<div class="system">调查面板中没有物品可调查。</div>');
+        return;
+    }
+    const comboKey = gameState.boxItems.slice().sort().join('+');
+    
+    // --- 1. 组合分析 ---
+    if (combinations[comboKey]) {
+        const combo = combinations[comboKey];
+        addToOutput(`<div class="system">${combo.message}</div>`);
+        
+        // 处理组合解锁的线索 (如果 clue 是数组，需要遍历)
+        if (combo.clue) {
+            // 假设 combo.clue 可能是字符串或数组
+            Array.isArray(combo.clue) ? combo.clue.forEach(c => addNewClue(c)) : addNewClue(combo.clue);
+        }
+        
+        // 处理组合解锁的词条 (如果 termUnlock 是数组，需要遍历)
+        if (combo.termUnlock) {
+            // 假设 combo.termUnlock 可能是字符串或数组
+            Array.isArray(combo.termUnlock) ? combo.termUnlock.forEach(t => addNewTerm(t)) : addNewTerm(combo.termUnlock);
+        }
+
+        // 【新增：处理组合解锁的新物品】
+        if (combo.itemUnlock) {
+            addNewItemToInventory(combo.itemUnlock);
+        }
+        
+        gameState.boxItems = [];
+        updateBoxDisplay();
+        updateBoxCounter();
+    } else {
+        // --- 2. 单个物品详细调查 ---
+        let foundNewInfo = false;
+        
+        gameState.boxItems.forEach(item => {
+            const itemDetail = items[item];
+            
+            // 检查物品是否存在、有详细调查信息且未被调查过
+            if (itemDetail && itemDetail.investigation && !gameState.examinedItems.includes(item)) {
+                
+                // 1. 显示 investigation 内容
+                addToOutput(`<div class="system">调查 <span class="highlight">${item}</span>：${itemDetail.investigation}</div>`);
+                
+                // 2. 处理词条解锁
+                if (itemDetail.termUnlock && Array.isArray(itemDetail.termUnlock)) {
+                    itemDetail.termUnlock.forEach(term => {
+                        addNewTerm(term);
+                    });
+                    foundNewInfo = true;
+                }
+                
+                // 3. 处理线索解锁
+                if (itemDetail.clue && Array.isArray(itemDetail.clue)) {
+                    itemDetail.clue.forEach(clue => {
+                        addNewClue(clue);
+                    });
+                    foundNewInfo = true;
+                }
+                
+                // 4. 处理隐藏物品（原有的 hiddenItems 逻辑）
+                if (itemDetail.hiddenItems) {
+                    itemDetail.hiddenItems.forEach(hiddenItem => {
+                        if (addNewItemToInventory(hiddenItem)) {
+                            foundNewInfo = true;
+                        }
+                    });
+                }
+
+                // 标记为已调查，防止重复触发
+                gameState.examinedItems.push(item);
+                
+                // 确保只要有新信息（词条/线索/物品）就算数
+                if (foundNewInfo) {
+                    // 不需要在这里添加单独的输出，让后面的总结输出处理
+                }
+            }
+        });
+
+        // 总结输出，避免重复
+        if (foundNewInfo) {
+            addToOutput('<div class="sela">SELA 助手：</div>发现了新的信息（词条/线索/物品）！这些可能对案件调查很重要。');
+        } else {
+            addToOutput('<div class="sela">SELA 助手：</div>没有发现任何新的组合结果或隐藏信息。');
+        }
+    }
+    
+    // 进度推进放在最外层，确保每次调查都会推进
+    gameState.gameProgress++;
+}
+
+        // 搜索还原记录 (保持不变)
+        function searchRestoreRecord() {
+            const searchKey = restoreSearch.value.trim();
+            if (!searchKey) {
+                restoreResult.style.display = 'none';
+                addToOutput('<div class="system">请输入搜索关键词。</div>');
+                return;
+            }
+            
+            if (restoreRecords[searchKey]) {
+                const record = restoreRecords[searchKey];
+                restoreResult.innerHTML = `<h4>${record.title}</h4>${record.content}`;
+                restoreResult.style.display = 'block';
+                addToOutput(`<div class="system">已找到还原记录：<span class="highlight">${searchKey}</span></div>`);
+                
+                if (!gameState.viewedRecords.has(searchKey)) {
+                    gameState.viewedRecords.add(searchKey);
+                    updateArchive();
+                    
+                    if (record.termUnlock && !gameState.terms.includes(record.termUnlock)) {
+                        addNewTerm(record.termUnlock);
+                        addToOutput(`<div class="sela">SELA 助手：</div>通过聊天记录分析获得了重要词条！`);
+                    }
+                    checkAllRecordsViewed();
+                }
+                
+            } else {
+                restoreResult.innerHTML = '<div class="system">未找到匹配的还原记录。请检查输入格式是否正确。</div>';
+                restoreResult.style.display = 'block';
+                addToOutput(`<div class="system">未找到还原记录：<span class="highlight">${searchKey}</span></div>`);
+            }
+        }
+
+        // 提交还原答案 (更新：支持多还原事项)
+        function submitRestore() {
+            const currentTopicKey = gameState.currentRestorationTopic;
+            const topic = restorationTopics[currentTopicKey];
+            const requiredTermsForFill = Object.values(topic.correct).filter(term => term !== '知情' && term !== '不知情'); // 填空所需的词条
+            
+            let allTermsAvailable = requiredTermsForFill.every(term => gameState.terms.includes(term));
+            
+            if (!allTermsAvailable) {
+                const missingTerms = requiredTermsForFill.filter(term => !gameState.terms.includes(term));
+                addToOutput('<div class="system">❌ 词条不足，无法完成还原。请继续调查物品和查看聊天记录收集更多词条。</div>');
+                addToOutput(`<div class="sela">SELA 助手：</div>您还缺少以下填空所需的关键词条：<span class="highlight">${missingTerms.join('、')}</span>`);
+                return;
+            }
+            
+            let allCorrect = true;
+            
+            // 检查填空题
+            const blanks = document.querySelectorAll('#restoration-blanks .blank');
+            blanks.forEach(blank => {
+                const userAnswer = blank.getAttribute('data-term');
+                const correctAnswer = topic.correct[blank.id];
+                
+                if (userAnswer !== correctAnswer) {
+                    allCorrect = false;
+                    blank.style.borderColor = '#a83232';
+                } else {
+                    blank.style.borderColor = '#2d5c2d';
+                }
+            });
+            
+            // 检查选择题（仅B/C关系有选择题）
+            if (topic.correct.choice1) {
+                const selected = (gameState.selectedChoice && gameState.selectedChoice[currentTopicKey] && gameState.selectedChoice[currentTopicKey].choice1) || null;
+                if (selected !== topic.correct.choice1) {
+                    allCorrect = false;
+                    document.querySelectorAll('[data-choice-id="choice1"]').forEach(choice => {
+                        if (choice.classList.contains('selected')) {
+                            choice.style.borderColor = '#a83232';
+                        }
+                    });
+                } else {
+                    document.querySelectorAll('[data-choice-id="choice1"]').forEach(choice => {
+                        if (choice.classList.contains('selected')) {
+                            choice.style.borderColor = '#2d5c2d';
+                        }
+                    });
+                }
+            }
+            
+            if (allCorrect) {
+                addToOutput('<div class="system">✅ 还原成功！关系分析完成。</div>');
+                
+                if (!gameState.caseRestored[currentTopicKey]) {
+                    gameState.caseRestored[currentTopicKey] = true;
+                    addNewClue(topic.resultClue); 
+                    
+                    // 检查是否所有还原都已完成
+                    const allTopicsRestored = Object.values(gameState.caseRestored).every(status => status);
+  if (allTopicsRestored) {
+     
+     // 使用 addToOutput 函数添加带有跳转链接的 HTML 字符串
+     addToOutput(`
+         <a href="end-choice.html" class="report-link">
+             所有案件还原已完成，向C王秀英报告案件结果
+         </a>
+     `);
+                        restorePanel.style.display = 'none'; // 全部完成后折叠面板
+                    } else {
+                         addToOutput('<div class="system">📁 案件还原结论已归档至线索栏。请切换到下一个还原事项继续调查。</div>');
+                    }
+                } else {
+                    addToOutput('<div class="system">🎉 此事项已还原完成，请查阅线索栏中的“'+topic.resultClue+'”。</div>');
+                }
+            } else {
+                addToOutput('<div class="system">❌ 还原不完整，请检查答案。</div>');
+            }
+        }
+
+        // 提供提示 (更新：提示需考虑多个还原事项)
+        function provideHint() {
+            if (gameState.currentRestorationTopic === 'B_D_RELATION' && !gameState.caseRestored['B_D_RELATION']) {
+                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原保证人D黒木圭吾与B闵莲如的关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/D</span>的聊天记录来获得重要词条。关键词格式是：B/D/年份月份。');
+            } else if (gameState.currentRestorationTopic === 'B_C_RELATION' && !gameState.caseRestored['B_C_RELATION']) {
+                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/C关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/C</span>的聊天记录来获得重要词条。关键词格式是：B/C/年份月份。');
+                } else if (gameState.currentRestorationTopic === 'B_E_RELATION' && !gameState.caseRestored['B_E_RELATION']) {
+                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/E关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/E</span>的聊天记录来获得重要词条。关键词格式是：B/E/年份月份。');
+          } else if (gameState.currentRestorationTopic === 'B_F_RELATION' && !gameState.caseRestored['B_F_RELATION']) {
+                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/F关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/C</span>的聊天记录来获得重要词条。关键词格式是：B/F/年份月份。');
+            } else if (gameState.currentRestorationTopic === 'B_H_RELATION' && !gameState.caseRestored['B_H_RELATION']) {
+                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/H关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/C</span>的聊天记录来获得重要词条。关键词格式是：B/H/年份月份。');
+           } else if (gameState.currentRestorationTopic === 'B_C_RELATION' && !gameState.caseRestored['B_G_RELATION']) {
+                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原列车员事件推理。请查找到隐藏的列车员笔记，以还原G高桥笃的目击场面。');
+            } else if (gameState.inventory.includes('死者手机') && !gameState.clues.includes('日记内容：无法承受的压力')) {
+                addToOutput('<div class="sela">SELA 助手：</div>提示：您似乎还没有深入查看死者手机中的应用。日记密码可能与照片中的日期有关。');
+               } else if (gameState.inventory.includes('G的铁道工作日志') && !gameState.clues.includes(' G高桥笃工作日志（修订版）')) {
+                addToOutput('<div class="sela">SELA 助手：</div>提示：你已找到g的工作日志，尝试完成g的案件还原');
+            } else if (gameState.inventory.includes('白色药片') && gameState.tools.includes('化学试剂') && !gameState.terms.includes('精神类疾病')) {
+                addToOutput('<div class="sela">SELA 助手：</div>提示：将白色药片与化学试剂放入调查面板进行分析，以确认药片成分。');
+            } else {
+                addToOutput('<div class="sela">SELA 助手：</div>已无更多直接提示。请仔细回顾已有的线索和词条，思考人物之间的复杂关系。');
+            }
+        }
+
+        // 事件监听器
+        document.getElementById('examine-btn').addEventListener('click', () => {
+            examineBox.style.display = examineBox.style.display === 'none' ? 'block' : 'none';
+            if (restorePanel.style.display !== 'none') restorePanel.style.display = 'none';
+        });
+        document.getElementById('restore-btn').addEventListener('click', () => {
+            if (Object.values(gameState.caseRestored).every(status => status)) {
+                 addToOutput('<div class="system">❌ 所有案件还原事项均已完成，请查阅线索栏中的所有结论。</div>');
+                 return;
+            }
+            restorePanel.style.display = restorePanel.style.display === 'none' ? 'block' : 'none';
+            if (examineBox.style.display !== 'none') examineBox.style.display = 'none';
+        });
+
+        // 还原事项选择器事件
+        restoreSelector.addEventListener('change', (e) => {
+            gameState.currentRestorationTopic = e.target.value;
+            renderRestorationPanel(e.target.value);
+            addToOutput(`<div class="system">案件还原事项已切换到：<span class="highlight">${restorationTopics[e.target.value].title}</span></div>`);
+        });
+
+        document.getElementById('hint-btn').addEventListener('click', provideHint);
+        document.getElementById('investigate-btn').addEventListener('click', investigateItem);
+        document.getElementById('clear-box').addEventListener('click', () => {
+            gameState.boxItems = [];
+            updateBoxDisplay();
+            updateBoxCounter();
+            addToOutput('<div class="system">已清空调查面板。</div>');
+        });
+        document.getElementById('submit-restore').addEventListener('click', submitRestore);
+        searchRestoreBtn.addEventListener('click', searchRestoreRecord);
+        restoreSearch.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchRestoreRecord();
+            }
+        });
+        // 初始化游戏
+        window.onload = initGame;
+    </script>
+</body>
+</html>
