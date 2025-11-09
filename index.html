@@ -479,7 +479,7 @@
 
                 <div class="search-restore">
                     <h3>事件还原搜索 (格式：人物1/人物2/年份月份)</h3>
-                    <input type="text" id="restore-search" class="search-input" placeholder="例如：B/C/201504 或 B/D/201507">
+                    <input type="text" id="restore-search" class="search-input" placeholder="例如：B/C/201504 或 B/C/D/201504_group">
     
                     <button id="search-restore-btn">搜索还原记录</button>
                     <div id="restore-result" class="restore-result" style="display: none;">
@@ -704,33 +704,40 @@
                 },
                 resultClue: '案件还原结论：B/C关系'
             },
-            'B_D_RELATION': {
-                title: '还原事项二：B闵莲如与D黒木圭吾关系还原',
-                blanks: [
-                    { id: 'blank_d1', html: '4月：D以（<span class="blank" id="blank_d1"></span>）为由增收费用' },
-                    { id: 'blank_d2', html: '7月：对B的（<span class="blank" id="blank_d2"></span>）问题漠不关心' },
-                    { id: 'blank_d3', html: '11月：对（<span class="blank" id="blank_d3"></span>）更新消极拖延最终导致B的签证过期。' },
-                ],
-                correct: {
-                    blank_d1: '服务升级',
-                    blank_d2: '健康',
-                    blank_d3: '签证',
-                },
-                resultClue: '案件还原结论：B/D关系'
-            },
+           'B_D_RELATION': {
+        title: '还原事项二：B闵莲如与D黒木圭吾关系还原',
+           blanks: [
+            { id: 'blank_d1', html: '4月：D以（<span class="blank" id="blank_d1"></span>）为由增收费用，其中包含多项（<span class="blank" id="blank_d2"></span>）' },
+            { id: 'choice2', html: 'D在7月拒绝送B就医的根本原因是', isChoice: true, options: [{ value: '培养B的自主能力', text: '培养B的自主能力' }, { value: '逃避紧急担保责任', text: '逃避紧急担保责任' }] },
+            { id: 'blank_d3', html: '7月：D对B的（<span class="blank" id="blank_d3"></span>）问题漠不关心，并将自身监护职责归为（<span class="blank" id="blank_d4"></span>）' },
+            { id: 'blank_d5', html: '11月：D利用B急需续签的时机，拖延（<span class="blank" id="blank_d5"></span>）更新' }
+           ],
+        correct: {
+            blank_d1: '服务升级',
+            blank_d2: '不透明收费',
+            choice2: '逃避紧急担保责任',
+            blank_d3: '健康',
+            blank_d4: '责任外包',
+            blank_d5: '签证',
+           
+        },
+        resultClue: '案件还原结论：B/D关系'
+    },
              'B_E_RELATION': {
     title: '还原事项三：B闵莲如与E周诗涵关系还原',
     blanks:[
         {id: 'blank_e1',html: 'E周诗涵最初以B的<span class="blank" id="blank_e1"></span>为由暗示其不合群。' },
         {id: 'blank_e2',html: '随后通过<span class="blank" id="blank_e2"></span>使B逐渐被孤立。' },
         {id: 'blank_e3',html: '在发现B信教后，霸凌升级为<span class="blank" id="blank_e3"></span>。' },
+        {id: 'blank_e5',html: '以B影响集体为由，触发了（<span class="blank" id="blank_e5"></span>），' },
         {id: 'blank_e4', html: '最终升级为以<span class="blank" id="blank_e4"></span>为名义的公开嘲讽。' }
              ],
     correct: {
         blank_e1: '出身背景',
         blank_e2: '活动排挤',
         blank_e3: '宗教歧视',
-        blank_e4: '精神类疾病'
+        blank_e4: '精神类疾病',
+        blank_e5: '排挤效应'
     },
     resultClue: '案件还原结论：B/E关系'
              },
@@ -761,32 +768,33 @@
     },
     resultClue: '案件还原结论：G/B关系'
 },
-'B_H_RELATION': {
-    title: '还原事项六：B闵莲如与H闵建国关系还原（原生家庭创伤）',
-    blanks: [
-        { id: 'blank_h1', html: '当B闵莲如取得学业上的优秀成绩时，H闵建国对她的努力表示<span class="blank" id="blank_h1"></span>，认为其成就毫无用处。' },
-        { id: 'blank_h2', html: 'H闵建国反复向B强调，供她留学支付<span class="blank" id="blank_h2"></span>是一种“情分”，这种态度体现了<span class="blank" id="blank_h3"></span>。' },
-        { id: 'blank_h3', html: '在B闵莲如留学期间面临生存危机，向H求助时，H非但拒绝，反而说出极端恶毒的言语，这是对其生存意志的<span class="blank" id="blank_h4"></span>。' },
-        { id: 'blank_h4', html: 'H的核心目的并非支持B的个人发展，而是通过控制学费的给予，来维持对B的心理控制和情感压制。' }
-    ],
-    correct: {
-        blank_h1: '成就贬低',
-        blank_h2: '学费',
-        blank_h3: '施恩心态',
-        blank_h4: '极限压榨',
+'B_H_RELATION': { title: '还原事项六：B闵莲如与H闵建国关系还原',
+ blanks: [ { id: 'blank_h1', html: 'H闵建国对B的成就表示（<span class="blank" id="blank_h1_new"></span>）。' }, 
+ { id: 'blank_h2', html: 'H的核心目的是通过（<span class="blank" id="blank_h2"></span>）和控制（<span class="blank" id="blank_h3"></span>），将B视为实现家庭目标的（<span class="blank" id="blank_h5_new"></span>）。' },
+  { id: 'choice3', html: 'H闵建国在B闵莲如遇到困难求助时，首要的反应是', isChoice: true, options: [{ value: '表达对女儿的担忧', text: '表达对女儿的担忧' }, { value: '强调自己的经济压力', text: '强调自己的经济压力' }] }, 
+  { id: 'blank_h5', html: 'B求助时，H的行为构成对其生存意志的（<span class="blank" id="blank_h5"></span>）。' }, 
+  { id: 'blank_h6',html:'B死后H反而进行（<span class="blank" id="blank_h6"></span>）。' },
+ ],
+  correct: {
+     blank_h1: '成就贬低',
+   blank_h2: '施恩心态',
+    blank_h3: '学费', 
+    choice3:'强调自己的经济压力',
+     blank_h5: '极限压榨', 
+     blank_h6: '死后哀荣', 
     },
-    resultClue: '案件还原结论：B/H关系'
-}
-        };
+      resultClue: '案件还原结论：B/H关系' 
+    },
+    };
 
         // 所有还原所需的词条
         const requiredTermsForRestore = ['制度僵化','经济压力', '反对', '弟弟', '学费', '一家之主', '精神类疾病', '威胁', '压力', '服务升级', '健康', '签证', '服务升级', '出身背景','活动排挤','宗教歧视','精神类疾病','同胞情谊' , '开始疏远', '沉默见证',
-      '恐惧妥协','成就贬低','极限压榨','施恩心态'];
+      '恐惧妥协','成就贬低','极限压榨','施恩心态','不透明收费','责任外包','排挤效应','海镜神社','死后哀荣'];
 
         // 事件还原记录
         const restoreRecords = {
-            'B/C/201504': { title: 'B闵莲如与C王秀英 - 2015年4月', content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 19:23</div><div>妈妈，保证人D黒木先生又要求额外费用了，说是什么"特殊管理费"，还要我买礼品打点学校关系。总共需要8万日元，能转给我吗？</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 21:45</div><div>怎么又要钱？上个月不是刚给过生活费吗？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 21:46</div><div>这是保证人另外要求的，说不交会影响我在学校的评价。而且他说这是在日本办事的规矩...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 21:50</div><div>莲如，家里现在真的拿不出这么多钱。你弟弟在上预科班，一节课就要好几百，下个月还要交学费。你在外面就不知道节省一点吗？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 21:52</div><div>这不是我要乱花钱，是保证人要求的。他说不按要求做可能会被退学...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 21:55</div><div>你就不能跟老师说说情况吗？非要什么都听保证人的？还有，你看看你，<strong>3</strong>个月才发一条信息，一联系就是要钱。我是你妈，不是提款机！</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 21:56</div><div>......我知道了。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 22:10</div><div>你先自己想想办法，我这边看看能不能凑一点。但别抱太大希望,不要像上个月一样和你爸吵架了，听到没！</div></div>`, termUnlock: '经济压力' },
-            'B/C/201507': { title: 'B闵莲如与C王秀英 - 2015年7月', content: `<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:15</div><div>莲如，你爸爸H闵建国跟我说了昨天吵架的事。你怎么能跟你爸顶嘴呢？他现在气得不行。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 22:16</div><div>妈，我只是说想转学，他就说我浪费钱，说女孩子读那么多书没用...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:18</div><div>你爸说话是重了点，但你现在确实花了很多钱。保证人费用、生活费，还有你弟弟的预科班...</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 22:20</div><div>[语音消息，带着哭腔]妈...我喘不过气...心跳好快...手麻...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:21</div><div>莲如？莲如你怎么了？快说话！</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:25</div><div>莲如！回话！我打电话给保证人！</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 23:40</div><div>医生说你是呼吸性碱中毒，情绪太激动导致的。你怎么这么不小心？年初才带你看过中医，说你是心脾两虚，让你好好调理。我给你寄的补品有没有认真吃？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:30</div><div>妈，我出院了。自己坐末班车回来的。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 08:32</div><div>保证人D黒木先生没去接你吗？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:33</div><div>他说太晚了不方便。我一个人坐末班电车回来的。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 08:35</div><div>莲如，你要记住，你是这个家的希望。妈妈把所有都赌在你身上了，你弟弟还小，这个家还需要你来撑起来。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:36</div><div>...有的。我知道。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 08:38</div><div>你要坚强，要争气。等你出息了，咱们家就能过上好日子。别让你爸看扁了我们母女。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:39</div><div>嗯，我会的。</div></div>`, termUnlock: '一家之主' },
+            'B/C/201504': { title: 'B闵莲如与C王秀英 - 2015年4月', content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 19:23</div><div>妈妈，保证人D黒木先生在**群聊**里又要求额外费用了，说是什么"特殊管理费"，总共需要8万日元，能转给我吗？</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 21:45</div><div>怎么又要钱？上个月不是刚给过吗？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 21:46</div><div>这是保证人另外要求的，说不交会影响我学校生活，现在的钱不包含我办手续。他说这是在日本办事的规矩...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 21:50</div><div>莲如，手续更新你可以自己克服一下。你弟弟在上预科班，一节课就要好几百，下个月还要交学费。你在外面就节省一点吧。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 21:52</div><div>我才刚到日本，这笔钱是保证人要求的。我有很多的手续都不明白应该怎么做。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 21:55</div><div>你就不能跟老师说说情况吗？非要什么都听保证人的？还有，你看看你，<strong>3</strong>个月才发一条信息，一联系就是要钱。我是你妈，不是提款机！</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 21:56</div><div>......我知道了。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 22:10</div><div>你先自己想想办法，我这边看看能不能凑一点。但别抱太大希望,不要像上个月一样和你爸吵架了，听到没！</div></div>`, termUnlock: '经济压力' },
+            'B/C/201507': { title: 'B闵莲如与C王秀英 - 2015年7月', content: `<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:15</div><div>莲如，你爸爸H闵建国跟我说吵架的事。你怎么能跟你爸顶嘴呢？他现在气得不行。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 22:16</div><div>妈，我只是说让他不要再提我费用的事了，他就说我浪费钱，说女孩子读那么多书没用...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:18</div><div>你爸说话是重了点，但你现在确实花了很多钱。保证人费用、生活费，还有你弟弟的预科班...</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-03 22:20</div><div>[语音消息，带着哭腔]妈...我喘不过气...心跳好快...手麻...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:21</div><div>莲如？莲如你怎么了？快说话！</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 22:25</div><div>莲如！回话！我打电话给保证人！</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-03 23:40</div><div>医生说你是呼吸性碱中毒，情绪太激动导致的。你怎么这么不小心？年初才带你看过中医，说你是心脾两虚，让你好好调理。我给你寄的补品有没有认真吃？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:30</div><div>妈，我出院了。自己坐末班车回来的。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 08:32</div><div>保证人D黒木先生没去接你吗？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:33</div><div>他说太晚了不方便。我一个人坐末班电车回来的。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 08:35</div><div>莲如，你要记住，你是这个家的希望。妈妈把所有都赌在你身上了，你弟弟还小，这个家还需要你来撑起来。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:36</div><div>...有的。我知道。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 08:38</div><div>你要坚强，要争气。等你出息了，咱们家就能过上好日子。别让你爸看扁了我们母女。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-04 08:39</div><div>嗯，我会的。</div></div>`, termUnlock: '一家之主' },
             'B/C/201510': { title: 'B闵莲如与C王秀英 - 2015年10月', content: `<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-10-31 19:23</div><div>莲如，有个好消息要告诉你。你弟弟的留学手续办下来了，下个月就能去东京读书了。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-31 19:24</div><div>弟弟也要来？可是妈妈，学费怎么办？我现在的生活费都很紧张...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-10-31 19:26</div><div>这就是我要跟你商量的事。你现在的学校太远了，照顾不到弟弟。我打听过了，今天刚好是10月最后一天，你爸明天发工资了，你早上去问问他。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-31 19:27</div><div>好的没我知道了，保证人D黒木先生那边...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-10-08 19:30</div><div>你别操心，你弟弟的留学费用家里已经准备好了。长姐如母，你现在要做的就是好好照顾弟弟。他第一次出国，什么都不懂。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-08 19:31</div><div>可是妈妈，我自己的学业也很重要啊。而且转学需要很多手续...</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-10-08 19:35</div><div>莲如，长姐如母，你要记住这个道理。弟弟还小，你是姐姐，照顾他是你的责任。妈妈在国内走不开，只能靠你了。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-08 19:36</div><div>......我明白了。</div></div><div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-10-08 19:38</div><div>转学的事抓紧办，下个月弟弟就要来了。长姐如母，你要有个当姐姐的样子。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-08 19:39</div><div>好的，妈妈。</div></div>`, termUnlock: '弟弟' },
             'B/D/201511': {
                 title: 'B闵莲如与D黒木圭吾 - 2015年11月',
@@ -803,23 +811,23 @@
                 content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-01 15:00</div><div>D先生，我刚收到通知要交新的管理费，可以告诉我包含了什么服务吗</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-04-01 15:05</div><div>这是根据市场行情调整的。物价上涨，我们的服务成本也增加了。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-01 15:06</div><div>具体有些什么内容呢？</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-04-01 15:10</div><div>包含紧急联络、文件处理、生活指导等全套服务。觉得贵可以找其他保证人。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-01 15:11</div><div>好的我知道了，如果来不及缴费会怎么样</div></div><div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-04-01 15:15</div><div>那就按时交费。下周一是截止日期，逾期会有滞纳金。</div></div>`,
                 termUnlock: '服务升级'
             },
-              'B/E/201504':{ title: 'B闵莲如与E周诗涵 - 2015年4月 (初识)',
-    content: `<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-04-10 16:30</div><div>听说你是从乡下来的？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-10 16:31</div><div>嗯，刚来，还不太习惯。</div></div><div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-04-10 16:32</div><div>怪不得，你的口音挺特别的。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-10 16:35</div><div>嗯…不过大家可能不太好接近你，别太往心里去。</div></div>`,
+              'B/E/201504':{ title: 'B闵莲如与E周诗涵 - 2015年4月',
+    content: `<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-04-10 16:30</div><div>听说你是从乡下来的？</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-10 16:31</div><div>嗯，刚来，还不太习惯。</div></div><div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-04-10 16:32</div><div>怪不得，你的口音挺特别的。</div></div><div class="chat-message"><div class="chat-sender">B周诗涵</div><div class="chat-time">2015-04-10 16:35</div><div>嗯…不过大家可能不太好接近你，别太往心里去。</div></div>`,
     termUnlock: '出身背景'
             },
              'B/E/201507': {
-             title: 'B闵莲如与E周诗涵 - 2015年7月 (渐行渐远)',
+             title: 'B闵莲如与E周诗涵 - 2015年7月',
              content: `<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-15 14:00</div><div>听说你们周末要去东京塔玩？能带上我吗？</div></div><div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-07-15 14:02</div><div>啊，我们这次是几个老朋友的聚会，下次吧。下次一定。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-15 14:05</div><div>哦...好吧。</div></div><div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-07-15 14:10</div><div>你最近怎么老是自己一个人在图书馆？多出来走走啊。</div></div>`,
-            termUnlock: '活动排挤'
+            termUnlock: null
             },
             'B/E/201510': {
-             title: 'B闵莲如与E周诗涵 - 2015年10月 (霸凌升级)',
+             title: 'B闵莲如与E周诗涵 - 2015年7月',
              content: `<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-10-22 17:50</div><div>听说你最近在看海镜神教教义？学校里信这个的人可不多啊，真是个奇怪的人</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-22 17:52</div><div>我只是...只是想找点心灵寄托。</div></div><div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-10-22 17:55</div><div>心灵寄托？我上个月听F说有人看到你对着空气说话。你要小心，被我发现，你可就不好混了。</div></div>`,
              termUnlock: '宗教歧视'
             },
             'B/F/201504': {
-            title: 'F李静怡与B闵莲如 - 2015年4月 (初识友善)',
-            content: `<div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-04-08 12:00</div><div>你是新来的闵同学吧？我叫李静怡，也是从中国来的。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-08 12:01</div><div>啊，你好！终于有人和我说话了...</div></div><div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-04-08 12:05</div><div>别客气，互相照应嘛。</div></div>`,
+            title: 'F李静怡与B闵莲如 - 2015年4月',
+            content: `<div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-04-08 12:00</div><div>你是新来的闵同学吧？我叫李静怡，也是从中国来的。</div></div><div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-08 12:01</div><div>啊，你好！终于有人和我说话了...</div></div><div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-04-08 12:05</div><div>别客气，互相照应嘛。我把你拉进我们中国人的群</div></div>`,
             termUnlock: '同胞情谊'
             },
 
@@ -850,7 +858,7 @@
         termUnlock: '施恩心态'
             },
             'B/H/201511': {
-            title: 'H闵建国与B闵莲如 - 2015年11月 (留学困境中的绝望求助与诅咒)',
+            title: 'H闵建国与B闵莲如 - 2015年11月',
              content: `
         <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-15 14:10</div><div>爸爸，我现在真的没有钱了，我这个月下发的催缴单被逾期处理了，拜托了。</div></div> <div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-11-15 14:15</div><div>你又在外面搞什么名堂？我让你好好读书，你给我惹麻烦！</div></div>
         <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-15 14:20</div><div>不是...只是生活费和学费的周转出了问题，我马上就要交学费了，不然会被退学。</div></div>
@@ -858,8 +866,74 @@
         <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-15 14:30</div><div>我...我正在想办法。但是现在我真的快饿死了，我求您了，看在我是您女儿的份上...</div></div>
         <div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-11-15 14:35</div><div>**你是我的女儿？你是来拖垮我的！日本人的狗崽种，**你干脆现在就去死！别再浪费我的钱！</div></div> <div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-11-15 14:40</div><div>。。。。</div></div> `,
      termUnlock: '极限压榨',
-    
+            },
+    'B/C/D/201504_group': {
+    title: 'B闵莲如与C王秀英、D黒木圭吾 - 2015年4月',
+    content: `<div class="chat-message group-notice">群组名称：留学生活指导群（闵家）</div>
+<div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-04-12 10:30</div><div>（@B闵莲如）关于您上次的费用咨询，我已向王女士（C）说明情况。因最近入管局对留学生管理趋严，学校也提高了对保证人的要求。为保证B同学的在校评价，需要额外的"特殊管理费" 8万日元，以升级服务。请C王秀英女士尽快汇款。</div></div>
+<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 11:15</div><div>D先生，上个月刚交了一笔，怎么这个月又有额外费用？我们签合同的时候没有这一项啊。我们家经济压力很大。</div></div>
+<div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-04-12 11:30</div><div>（@C王秀英）这是日本的惯例，而且我提供的已经是**服务升级**后的价格。不升级服务，我方无法保证后续材料办理的“绿色通道”。**制度僵化**，您也理解一下。</div></div>
+<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-12 14:00</div><div>妈妈，D先生说不交可能会影响签证...</div></div>
+<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-04-12 17:30</div><div>D先生，我尽量筹钱。请问这个费用具体用于哪些方面？</div></div>
+<div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-04-12 18:00</div><div>用于打点学校关系、特殊时期应急处理等。这是惯例，请不必多问。</div></div>`,
+    termUnlock: '不透明收费'
+            },
+    'B/C/D/201507_group': {
+    title: 'B闵莲如与C王秀英、D黒木圭吾 - 2015年7月',
+    content: `<div class="chat-message group-notice">群组名称：留学生活指导群（闵家）</div>
+<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 09:30</div><div>D先生，我女儿昨天半夜发病，呼吸困难，为什么您作为她的保证人，不肯亲自送她去医院？您收了我们的费用，这就是您的服务态度吗？</div></div>
+<div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-07-04 09:45</div><div>（@C王秀英）王女士，请您冷静。首先，我已明确告知B同学叫救护车的号码。其次，留学生需要学习独立生活，这是他们出国留学的必修课。我们提供的是**指导**服务，而不是24小时保姆服务。</div></div>
+<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 09:50</div><div>可是她当时情绪非常不稳定，日语又不好，怎么能让她一个人去？我把孩子交给您，是希望她能得到照顾！</div></div>
+<div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-07-04 10:00</div><div>（@C王秀英）正是因为这样，我们才要**培养学生的自主能力**。一遇到困难就求助他人，是对她未来发展不利的。您要相信，这是对她最好的教育方式。</div></div>
+<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-07-04 10:05</div><div>......（@B闵莲如）莲如，你看到D先生说的了吗？你一定要自己争气！</div></div>`,
+    termUnlock: '责任外包'
+},
+// 增补的四方群聊记录
+'C/D/H/201512_group': {
+    title: 'C/D/H群聊 - 2015年12月',
+    content: `<div class="chat-message group-notice">群组名称：留学生活指导群（闵家）</div>
+<div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-12-15 15:00</div><div>D黒木圭吾先生，我们女儿已经不在了。现在立刻把我们交给你的所有保证人费用、管理费，全部退还给我们！</div></div>
+<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-12-15 15:05</div><div>对！还有她的学费！我们投了这么多钱，现在人没了，你必须把损失赔给我们！我们投资了这么多，现在全打水漂了！</div></div>
+<div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-12-15 15:15</div><div>（@H闵建国 @C王秀英）两位，请节哀。但我们之间的合同已经履行，费用是服务费用，无法退还。至于学费，请您联系学校。</div></div>
+<div class="chat-message"><div class="chat-sender">H闵建国</div><div class="chat-time">2015-12-15 15:20</div><div>放屁！就是你没有尽到保证人的责任，导致她精神压力过大才出事的！你必须赔偿我们的的损失！她是我们家的希望，现在希望断了，你算什么保证人！</div></div>
+<div class="chat-message"><div class="chat-sender">C王秀英</div><div class="chat-time">2015-12-15 15:25</div><div>（@H闵建国）老闵，别跟他废话！我们直接去告他！。他毁了我们全家！</div></div>
+<div class="chat-message"><div class="chat-sender">D黒木圭吾</div><div class="chat-time">2015-12-15 15:30</div><div>（已退群）</div></div>`,
+    termUnlock: '死后哀荣'
+},
+'B/E/F/201504_group': {
+    title: 'B闵莲如、E、F - 2015年4月',
+    content: `<div class="chat-message group-notice">群组名称：留学生互助</div>
+<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-04-10 14:30</div><div>（@B闵莲如 @F）我拉了个群，大家以后有学习资料互相分享一下，或者平时有问题可以随时在群里问。</div></div>
+<div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-04-10 14:35</div><div>太好了！E你真细心！闵同学（B）有什么不明白的，尽管问我们。</div></div>
+<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-10 14:40</div><div>谢谢你们！我刚来不太适应，你们帮了我大忙了。</div></div>
+<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-04-10 14:45</div><div>都是同胞，互相帮助是应该的。最近大家都在备考日语等级吧？互相交流一下经验。</div></div>
+<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-04-10 14:50</div><div>嗯，我打算过几天去学校旁边的书店看看。</div></div>`,
+    termUnlock: null
+},
+'B/E/F/201507_group': {
+    title: 'B闵莲如、E、F - 2015年7月',
+    content: `<div class="chat-message group-notice">群组名称：留学生互助</div>
+<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-07-18 19:10</div><div>大家！这周五晚上我们去东京塔打卡拍照怎么样？庆祝期末结束！我订了塔附近评价很高的西餐店。</div></div>
+<div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-07-18 19:15</div><div>好啊好啊！西餐诶！东京塔夜景超美！B，你来吗？</div></div>
+<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-07-18 19:25</div><div>周五晚上...我可能不行。我最近要准备上个学去的补考，上个学期我不在，这个考试关乎毕业。真的很想去，抱歉。</div></div>
+<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-07-18 19:30</div><div>（@B闵莲如）**英语考试有那么重要吗？**我们大家都是留学生，谁不忙啊？但这种重要的社交场合，你总是不出现，将来怎么融入东京的生活呢？</div></div>
+<div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-07-18 19:35</div><div>（@B闵莲如）B，没关系，下次再约?</div></div>
+<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-07-18 19:40</div><div>（@B闵莲如）算了，既然你总是有事，我们就不等你啦！下次我们几个老朋友聚会再说。</div></div>`,
+    termUnlock: '社交欠席'
+},
+'B/E/F/201510_group': {
+    title: 'B闵莲如、E、F - 2015年10月)',
+    content: `<div class="chat-message group-notice">群组名称：留学生学习互助</div>
+<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-10-25 10:00</div><div>（@B闵莲如）B，你最近的状态确实不太好，我们小组平均分都被你拉低了。</div></div>
+<div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-10-25 10:05</div><div>是啊B，而且你最近情绪也很低落，大家在一起，气氛都变得有点沉重了... 我们真的很担心你。</div></div>
+<div class="chat-message"><div class="chat-sender">B闵莲如</div><div class="chat-time">2015-10-25 10:15</div><div>对不起，我保证下周会补上所有落下的内容。</div></div>
+<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-10-25 10:20</div><div>B，我们商量了一下，你还是加入别的组吧。这样对我们小组进度也有影响。F，你觉得呢？</div></div>
+<div class="chat-message"><div class="chat-sender">F李静怡</div><div class="chat-time">2015-10-25 10:25</div><div>（低头）嗯... B，你先休息一段时间吧。等你调整好了，我们再...再联系。</div></div>
+<div class="chat-message"><div class="chat-sender">E周诗涵</div><div class="chat-time">2015-10-25 10:30</div><div>（@B闵莲如）是的，这段时间你还是先自己静一静比较好。</div></div>`,
+    termUnlock: '排挤效应' 
 }
+
+    
 
 
         };
@@ -944,34 +1018,39 @@ function openDeadPhoneMenu() {
 function openPhotoAlbum() {
     addToOutput('<div class="system">🖼️ 相册内容：</div><div class="sela">插着数字16的蛋糕，日期：2014/12/23</div>');
 }
-
 function openDiaryApp() {
     if (diaryUnlocked) {
-        addToOutput('<div class="system">🔓 日记已于之前解锁，无法再次打开。</div>');
+        // 已解锁 → 直接显示日记
+        addToOutput(diaryContent);
         return;
     }
 
+    // 打开新的密码输入框
     const passwordPrompt = `<div class="system">🔒 日记软件：请输入6位密码。</div>
-    <input type="text" id="diary-password" class="search-input" placeholder="6位数字" maxlength="6" style="width: 150px; display: inline-block;">
+    <input type="text" class="diary-password search-input" placeholder="6位数字" maxlength="6" style="width: 150px; display: inline-block;">
     <button onclick="checkDiaryPassword()">确认</button>`;
 
     addToOutput(passwordPrompt);
 }
+
 function checkDiaryPassword() {
-    const input = document.getElementById('diary-password');
-    if (!input) {
-        addToOutput('<div class="system">❌ 输入框不存在，请重新打开日记应用。</div>');
+    // 获取所有当前存在的密码输入框
+    const inputs = document.querySelectorAll('.diary-password');
+    if (!inputs.length) {
+        addToOutput('<div class="system">❌ 没有找到输入框，请重新打开日记应用。</div>');
         return;
     }
 
-    const password = input.value;
     const correctPassword = '981223';
+    let unlockedThisTime = false;
 
-    if (password === correctPassword) {
-        diaryUnlocked = true;
-        addToOutput('<div class="system">✅ 密码正确！正在打开日记...</div>');
+    // 遍历所有输入框，只要有一个输入正确密码就解锁
+    inputs.forEach(input => {
+        if (input.value === correctPassword && !diaryUnlocked) {
+            diaryUnlocked = true;
+            unlockedThisTime = true;
 
-        const diaryContent = `
+ diaryContent = `
 <div class="system">📝 B闵莲如日记内容 (2015年4月 - 11月)</div>
 
         <h3>2015年4-6月</h3>
@@ -1039,25 +1118,41 @@ function checkDiaryPassword() {
  <div class="chat-time">2015年11月15日 ★ 事发前日</div>
 <div>我让实验用的老鼠融合在了一起@#$$#@.冰层下的体温复诵： “佉祢钵吒蒙婆悉” 当韵脚卡进齿轮 房间开始脱落吽咇噼啪咪懑疒萼笯<br>教主说"大海会包容一切" 他们以噫吠陀缝合眼睑 黑暗凝结成透明的真言<br>**在海上铁轨，赴归于大海…** 这就是我的归宿吧。</div>
  </div>`
-addToOutput(diaryContent);
- }
 
+ addToOutput('<div class="system">✅ 密码正确！正在打开日记...</div>');
 
-    if (password === correctPassword) {
-        addToOutput(diaryContent);
-        // 解锁与宗教相关的线索和词条
-        if (!gameState.terms.includes('海镜神教')) {
-            gameState.terms.push('海镜神教');
-            updateTerms();
-            addToOutput('<div class="sela">SELA 助手：从日记中提取到新词条：<span class="highlight">海镜神教</span></div>');
-        }
-    } else {
-        addToOutput('<div class="system">❌ 密码错误，请重新输入。</div>');
-    }
+            // 解锁词条，只做一次
+            if (!gameState.terms.includes('海镜神教')) {
+                gameState.terms.push('海镜神教');
+                updateTerms();
+                addToOutput('<div class="sela">SELA 助手：从日记中提取到新词条：<span class="highlight">海镜神教</span></div>');
+            }
+        }
+    });
+
+    // 显示日记（无论是首次解锁还是之前解锁过的）
+    if (diaryUnlocked) {
+        addToOutput(diaryContent);
+    }
+
+    // 如果没有任何输入正确
+    if (!unlockedThisTime && !diaryUnlocked) {
+        addToOutput('<div class="system">❌ 密码错误，请重新输入。</div>'); 
+        }
+    }
+       
+        function openChatApp() {
+    addToOutput(
+        '<div class="system">💬 聊天软件：</div>' +
+        '<div class="sela">聊天记录已损坏，请使用<span class="highlight">案件还原系统</span>中的<span class="highlight">事件还原搜索</span>功能进行还原。格式为：人物1/人物2/年月 (例如：B/C/201504)</div>' +
+        // 替换为 <a href> 样式
+        '<div style="margin-top: 10px;">' +
+        '  <a href="letter.html" class="report-link">' +
+        '    📄 查看B未发出的邮件' +
+        '  </a>' +
+        '</div>'
+    );
 }
-        function openChatApp() {
-            addToOutput('<div class="system">💬 聊天软件：</div><div class="sela">聊天记录已损坏，请使用<span class="highlight">案件还原系统</span>中的<span class="highlight">事件还原搜索</span>功能进行还原。格式为：人物1/人物2/年月 (例如：B/C/201504)</div>');
-        }
          // 更新线索列表 (新增：线索点击查看内容)
         function updateClues() {
             cluesEl.innerHTML = '';
@@ -1453,126 +1548,131 @@ function investigateItem() {
                 addToOutput(`<div class="system">未找到还原记录：<span class="highlight">${searchKey}</span></div>`);
             }
         }
-
-        // 提交还原答案 (更新：支持多还原事项)
         function submitRestore() {
-            const currentTopicKey = gameState.currentRestorationTopic;
-            const topic = restorationTopics[currentTopicKey];
-            const requiredTermsForFill = Object.values(topic.correct).filter(term => term !== '知情' && term !== '不知情'); // 填空所需的词条
-            
-            let allTermsAvailable = requiredTermsForFill.every(term => gameState.terms.includes(term));
-            
-            if (!allTermsAvailable) {
-                const missingTerms = requiredTermsForFill.filter(term => !gameState.terms.includes(term));
-                addToOutput('<div class="system">❌ 词条不足，无法完成还原。请继续调查物品和查看聊天记录收集更多词条。</div>');
-                addToOutput(`<div class="sela">SELA 助手：</div>您还缺少以下填空所需的关键词条：<span class="highlight">${missingTerms.join('、')}</span>`);
-                return;
-            }
-            
-            let allCorrect = true;
-            
-            // 检查填空题
-            const blanks = document.querySelectorAll('#restoration-blanks .blank');
-            blanks.forEach(blank => {
-                const userAnswer = blank.getAttribute('data-term');
-                const correctAnswer = topic.correct[blank.id];
-                
-                if (userAnswer !== correctAnswer) {
-                    allCorrect = false;
-                    blank.style.borderColor = '#a83232';
-                } else {
-                    blank.style.borderColor = '#2d5c2d';
-                }
-            });
-            
-            // 检查选择题（仅B/C关系有选择题）
-            if (topic.correct.choice1) {
-                const selected = (gameState.selectedChoice && gameState.selectedChoice[currentTopicKey] && gameState.selectedChoice[currentTopicKey].choice1) || null;
-                if (selected !== topic.correct.choice1) {
-                    allCorrect = false;
-                    document.querySelectorAll('[data-choice-id="choice1"]').forEach(choice => {
-                        if (choice.classList.contains('selected')) {
-                            choice.style.borderColor = '#a83232';
-                        }
-                    });
-                } else {
-                    document.querySelectorAll('[data-choice-id="choice1"]').forEach(choice => {
-                        if (choice.classList.contains('selected')) {
-                            choice.style.borderColor = '#2d5c2d';
-                        }
-                    });
-                }
-            }
-            
-            if (allCorrect) {
-                addToOutput('<div class="system">✅ 还原成功！关系分析完成。</div>');
-                
-                if (!gameState.caseRestored[currentTopicKey]) {
-                    gameState.caseRestored[currentTopicKey] = true;
-                    addNewClue(topic.resultClue); 
-                    
-                    // 检查是否所有还原都已完成
-                    const allTopicsRestored = Object.values(gameState.caseRestored).every(status => status);
-  if (allTopicsRestored) {
-     
-     // 使用 addToOutput 函数添加带有跳转链接的 HTML 字符串
-     addToOutput(`
-         <a href="end-choice.html" class="report-link">
-             所有案件还原已完成，向C王秀英报告案件结果
-         </a>
-     `);
-                        restorePanel.style.display = 'none'; // 全部完成后折叠面板
-                    } else {
-                         addToOutput('<div class="system">📁 案件还原结论已归档至线索栏。请切换到下一个还原事项继续调查。</div>');
-                    }
-                } else {
-                    addToOutput('<div class="system">🎉 此事项已还原完成，请查阅线索栏中的“'+topic.resultClue+'”。</div>');
-                }
-            } else {
-                addToOutput('<div class="system">❌ 还原不完整，请检查答案。</div>');
-            }
+    const currentTopicKey = gameState.currentRestorationTopic;
+    const topic = restorationTopics[currentTopicKey];
+    const requiredTermsForFill = Object.values(topic.correct).filter(term => term !== '知情' && term !== '不知情' && term !== '培养B的自主能力'
+         && term !== '逃避紧急担保责任'
+         && term !== '表达对女儿的担忧'
+         && term !== '强调自己的经济压力'); 
+    
+    // 检查是否拥有所有填空词条
+    let allTermsAvailable = requiredTermsForFill.every(term => gameState.terms.includes(term));
+    if (!allTermsAvailable) {
+        const missingTerms = requiredTermsForFill.filter(term => !gameState.terms.includes(term));
+        addToOutput('<div class="system">❌ 词条不足，无法完成还原。请继续调查物品和查看聊天记录收集更多词条。</div>');
+        addToOutput(`<div class="sela">SELA 助手：</div>您还缺少以下填空所需的关键词条：<span class="highlight">${missingTerms.join('、')}</span>`);
+        return;
+    }
+
+    let allCorrect = true;
+
+    // 检查填空题
+    const blanks = document.querySelectorAll('#restoration-blanks .blank');
+    blanks.forEach(blank => {
+        const userAnswer = blank.getAttribute('data-term');
+        const correctAnswer = topic.correct[blank.id];
+        if (userAnswer !== correctAnswer) {
+            allCorrect = false;
+            blank.style.borderColor = '#a83232';
+        } else {
+            blank.style.borderColor = '#2d5c2d';
         }
+    });
 
-        // 提供提示 (更新：提示需考虑多个还原事项)
-        function provideHint() {
-            if (gameState.currentRestorationTopic === 'B_D_RELATION' && !gameState.caseRestored['B_D_RELATION']) {
-                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原保证人D黒木圭吾与B闵莲如的关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/D</span>的聊天记录来获得重要词条。关键词格式是：B/D/年份月份。');
-            } else if (gameState.currentRestorationTopic === 'B_C_RELATION' && !gameState.caseRestored['B_C_RELATION']) {
-                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/C关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/C</span>的聊天记录来获得重要词条。关键词格式是：B/C/年份月份。');
-                } else if (gameState.currentRestorationTopic === 'B_E_RELATION' && !gameState.caseRestored['B_E_RELATION']) {
-                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/E关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/E</span>的聊天记录来获得重要词条。关键词格式是：B/E/年份月份。');
-          } else if (gameState.currentRestorationTopic === 'B_F_RELATION' && !gameState.caseRestored['B_F_RELATION']) {
-                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/F关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/C</span>的聊天记录来获得重要词条。关键词格式是：B/F/年份月份。');
-            } else if (gameState.currentRestorationTopic === 'B_H_RELATION' && !gameState.caseRestored['B_H_RELATION']) {
-                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/H关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/C</span>的聊天记录来获得重要词条。关键词格式是：B/H/年份月份。');
-           } else if (gameState.currentRestorationTopic === 'B_C_RELATION' && !gameState.caseRestored['B_G_RELATION']) {
-                addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原列车员事件推理。请查找到隐藏的列车员笔记，以还原G高桥笃的目击场面。');
-            } else if (gameState.inventory.includes('死者手机') && !gameState.clues.includes('日记内容：无法承受的压力')) {
-                addToOutput('<div class="sela">SELA 助手：</div>提示：您似乎还没有深入查看死者手机中的应用。日记密码可能与照片中的日期有关。');
-               } else if (gameState.inventory.includes('G的铁道工作日志') && !gameState.clues.includes(' G高桥笃工作日志（修订版）')) {
-                addToOutput('<div class="sela">SELA 助手：</div>提示：你已找到g的工作日志，尝试完成g的案件还原');
-            } else if (gameState.inventory.includes('白色药片') && gameState.tools.includes('化学试剂') && !gameState.terms.includes('精神类疾病')) {
-                addToOutput('<div class="sela">SELA 助手：</div>提示：将白色药片与化学试剂放入调查面板进行分析，以确认药片成分。');
-            } else {
-                addToOutput('<div class="sela">SELA 助手：</div>已无更多直接提示。请仔细回顾已有的线索和词条，思考人物之间的复杂关系。');
-            }
+    // 检查单个选项函数
+function checkChoice(choiceId) {
+    if (!(choiceId in topic.correct)) return;
+
+    const selected = (
+        gameState.selectedChoice &&
+        gameState.selectedChoice[currentTopicKey] &&
+        gameState.selectedChoice[currentTopicKey][choiceId]
+    ) || null;
+
+    const isCorrect = selected === topic.correct[choiceId];
+    if (!isCorrect) allCorrect = false;
+
+    document.querySelectorAll(`[data-choice-id="${choiceId}"]`).forEach(choice => {
+        if (choice.classList.contains('selected')) {
+            choice.style.borderColor = isCorrect ? '#2d5c2d' : '#a83232';
         }
+    });
+}
 
-        // 事件监听器
-        document.getElementById('examine-btn').addEventListener('click', () => {
-            examineBox.style.display = examineBox.style.display === 'none' ? 'block' : 'none';
-            if (restorePanel.style.display !== 'none') restorePanel.style.display = 'none';
-        });
-        document.getElementById('restore-btn').addEventListener('click', () => {
-            if (Object.values(gameState.caseRestored).every(status => status)) {
-                 addToOutput('<div class="system">❌ 所有案件还原事项均已完成，请查阅线索栏中的所有结论。</div>');
-                 return;
-            }
-            restorePanel.style.display = restorePanel.style.display === 'none' ? 'block' : 'none';
-            if (examineBox.style.display !== 'none') examineBox.style.display = 'none';
-        });
+// ✅ 自动查找当前 topic 所有 choice
+Object.keys(topic.correct).forEach(key => {
+    if (key.startsWith("choice")) {
+        checkChoice(key);
+    }
+});
 
-        // 还原事项选择器事件
+    // 如果答案全部正确，标记当前还原任务完成
+    if (allCorrect) {
+        gameState.caseRestored[currentTopicKey] = true;
+        addNewClue(topic.resultClue);
+
+        // 检查是否所有案件还原任务完成
+        const allTopicsRestored = Object.values(gameState.caseRestored).every(status => status);
+        if (allTopicsRestored) {
+            addToOutput(`
+                <a href="end-choice.html" class="report-link">
+                    所有案件还原已完成，向C王秀英报告案件结果
+                </a>
+            `);
+            restorePanel.style.display = 'none'; // 全部完成后折叠面板
+        } else {
+            addToOutput('<div class="system">📁 案件还原结论已归档至线索栏。请切换到下一个还原事项继续调查。</div>');
+        }
+    } else {
+        addToOutput('<div class="system">❌ 还原不完整，请检查答案。</div>');
+    }
+}
+
+// ===========================
+// 提供提示 (更新：提示需考虑多个还原事项)
+// ===========================
+function provideHint() {
+    const topic = gameState.currentRestorationTopic;
+
+    if (topic === 'B_D_RELATION' && !gameState.caseRestored['B_D_RELATION']) {
+        addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原保证人D黒木圭吾与B闵莲如的关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/D</span>的聊天记录来获得重要词条。关键词格式是：B/D/年份月份。');
+    } else if (topic === 'B_C_RELATION' && !gameState.caseRestored['B_C_RELATION']) {
+        addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/C关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/C</span>的聊天记录来获得重要词条。关键词格式是：B/C/年份月份。');
+    } else if (topic === 'B_E_RELATION' && !gameState.caseRestored['B_E_RELATION']) {
+        addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/E关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/E</span>的聊天记录来获得重要词条。关键词格式是：B/E/年份月份。');
+    } else if (topic === 'B_F_RELATION' && !gameState.caseRestored['B_F_RELATION']) {
+        addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/F关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/F</span>的聊天记录来获得重要词条。关键词格式是：B/F/年份月份。');
+    } else if (topic === 'B_H_RELATION' && !gameState.caseRestored['B_H_RELATION']) {
+        addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原B/H关系。请使用“事件还原搜索”功能，查看所有关于<span class="highlight">B/H</span>的聊天记录来获得重要词条。关键词格式是：B/H/年份月份。');
+    } else if (topic === 'B_G_RELATION' && !gameState.caseRestored['B_G_RELATION']) {
+        addToOutput('<div class="sela">SELA 助手：</div>提示：您当前正在还原列车员事件推理。请查找到隐藏的列车员笔记，以还原G高桥笃的目击场面。');
+    } else if (gameState.inventory.includes('死者手机') && !gameState.clues.includes('日记内容：无法承受的压力')) {
+        addToOutput('<div class="sela">SELA 助手：</div>提示：您似乎还没有深入查看死者手机中的应用。日记密码可能与照片中的日期有关。');
+    } else if (gameState.inventory.includes('G的铁道工作日志') && !gameState.clues.includes(' G高桥笃工作日志（修订版）')) {
+        addToOutput('<div class="sela">SELA 助手：</div>提示：你已找到G的工作日志，尝试完成G的案件还原');
+    } else if (gameState.inventory.includes('白色药片') && gameState.tools.includes('化学试剂') && !gameState.terms.includes('精神类疾病')) {
+        addToOutput('<div class="sela">SELA 助手：</div>提示：将白色药片与化学试剂放入调查面板进行分析，以确认药片成分。');
+    } else {
+        addToOutput('<div class="sela">SELA 助手：</div>已无更多直接提示。请仔细回顾已有的线索和词条，思考人物之间的复杂关系。');
+    }
+}
+
+// ===========================
+// 事件监听器
+// ===========================
+document.getElementById('examine-btn').addEventListener('click', () => {
+    examineBox.style.display = examineBox.style.display === 'none' ? 'block' : 'none';
+    if (restorePanel.style.display !== 'none') restorePanel.style.display = 'none';
+});
+
+document.getElementById('restore-btn').addEventListener('click', () => {
+    restorePanel.style.display = restorePanel.style.display === 'none' ? 'block' : 'none';
+    if (examineBox.style.display !== 'none') examineBox.style.display = 'none';
+    submitRestore(); // 点击还原按钮时直接提交
+});
+
+     // 还原事项选择器事件
         restoreSelector.addEventListener('change', (e) => {
             gameState.currentRestorationTopic = e.target.value;
             renderRestorationPanel(e.target.value);
