@@ -762,9 +762,11 @@
     title: '还原事项五：G高桥笃与B闵莲如关系还原',
     blanks: [
         { id: 'blank_g1', html: 'G高桥笃作为目击者，因工作疏忽未能及时干预，虽完成基本职责但存在（<span class="blank" id="blank_g1"></span>）'},
+        { id: 'choice4', html: 'G高桥笃之前与B', isChoice: true, options: [{ value: '见过', text: '见过' }, { value: '没见过', text: '没见过' }] },
     ],
     correct: {
         blank_g1: '制度僵化',
+        choice4:见过
     },
     resultClue: '案件还原结论：G/B关系'
 },
@@ -773,7 +775,7 @@
  { id: 'blank_h2', html: 'H的核心目的是通过（<span class="blank" id="blank_h2"></span>）和控制（<span class="blank" id="blank_h3"></span>），将B视为实现家庭目标的（<span class="blank" id="blank_h5_new"></span>）。' },
   { id: 'choice3', html: 'H闵建国在B闵莲如遇到困难求助时，首要的反应是', isChoice: true, options: [{ value: '表达对女儿的担忧', text: '表达对女儿的担忧' }, { value: '强调自己的经济压力', text: '强调自己的经济压力' }] }, 
   { id: 'blank_h5', html: 'B求助时，H的行为构成对其生存意志的（<span class="blank" id="blank_h5"></span>）。' }, 
-  { id: 'blank_h6',html:'B死后H反而进行（<span class="blank" id="blank_h6"></span>）。' },
+  { id: 'blank_h6',html:'B死后（12月）H反而进行（<span class="blank" id="blank_h6"></span>）。' },
  ],
   correct: {
      blank_h1: '成就贬低',
@@ -1554,7 +1556,9 @@ function investigateItem() {
     const requiredTermsForFill = Object.values(topic.correct).filter(term => term !== '知情' && term !== '不知情' && term !== '培养B的自主能力'
          && term !== '逃避紧急担保责任'
          && term !== '表达对女儿的担忧'
-         && term !== '强调自己的经济压力'); 
+         && term !== '强调自己的经济压力'
+        && term !== '见过'
+        && term !== '没见过'); 
     
     // 检查是否拥有所有填空词条
     let allTermsAvailable = requiredTermsForFill.every(term => gameState.terms.includes(term));
